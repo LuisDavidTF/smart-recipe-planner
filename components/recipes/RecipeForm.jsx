@@ -1,15 +1,15 @@
-// components/recipes/RecipeForm.jsx
+
 'use client'
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useApiClient } from '@hooks/useApiClient'; // Ajusta ruta
-import { useToast } from '@context/ToastContext'; // Ajusta ruta
-import { FormInput } from '@components/ui/FormInput'; // Ajusta ruta
-import { Button } from '@components/ui/Button'; // Ajusta ruta
-import { ErrorState } from '@components/ui/ErrorState'; // Ajusta ruta
-import { TrashIcon, SparklesIcon } from '@components/ui/Icons'; // Ajusta ruta
+import { useApiClient } from '@hooks/useApiClient';
+import { useToast } from '@context/ToastContext'; 
+import { FormInput } from '@components/ui/FormInput'; 
+import { Button } from '@components/ui/Button'; 
+import { ErrorState } from '@components/ui/ErrorState'; 
+import { TrashIcon, SparklesIcon } from '@components/ui/Icons'; 
 
 export function RecipeForm({ recipeId }) {
   const [formData, setFormData] = useState({
@@ -22,16 +22,14 @@ export function RecipeForm({ recipeId }) {
     type: 'lunch',
     visibility: 'public',
   });
-  const [status, setStatus] = useState('loading'); // 'loading', 'idle', 'submitting'
+  const [status, setStatus] = useState('loading'); 
   const [apiError, setApiError] = useState(null);
-  const [errors, setErrors] = useState({}); // Errores de validación en tiempo real
+  const [errors, setErrors] = useState({}); 
 
-  // --- Estados de Gemini ---
   const [magicPrompt, setMagicPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationError, setGenerationError] = useState(null);
 
-  // --- Refs para Scroll ---
   const nameRef = useRef(null);
   const descriptionRef = useRef(null);
   const preparationTimeRef = useRef(null);
@@ -44,7 +42,6 @@ export function RecipeForm({ recipeId }) {
   const router = useRouter();
   const isEditMode = !!recipeId;
 
-  // --- Cargar datos de la receta si estamos en modo de edición ---
   useEffect(() => {
     if (isEditMode) {
       setStatus('loading');
@@ -71,10 +68,9 @@ export function RecipeForm({ recipeId }) {
           setStatus('error');
         });
     } else {
-      setStatus('idle'); // Listo para crear
+      setStatus('idle'); 
     }
   }, [recipeId, api, isEditMode]);
-  // --- Lógica de Scroll ---
   const scrollToFirstError = (validationErrors) => {
     const errorPriority = [
       'name',
@@ -125,7 +121,6 @@ export function RecipeForm({ recipeId }) {
     }
   };
 
-  // --- Manejadores de formulario dinámico (Ingredientes) ---
   const handleIngredientChange = (index, field, value) => {
     const newIngredients = [...formData.ingredients];
     newIngredients[index][field] = value;
@@ -147,12 +142,11 @@ export function RecipeForm({ recipeId }) {
     clearRootError('ingredientsRoot');
   };
 
-  // --- Manejadores de formulario dinámico (Instrucciones) ---
   const handleInstructionChange = (index, value) => {
     const newInstructions = [...formData.instructions];
     newInstructions[index] = value;
     setFormData(prev => ({ ...prev, instructions: newInstructions }));
-    clearRootError('instructionsRoot'); // Corregido de ingredientsRoot a instructionsRoot si aplica
+    clearRootError('instructionsRoot'); 
   };
 
   const addInstruction = () => {
@@ -165,10 +159,9 @@ export function RecipeForm({ recipeId }) {
   const removeInstruction = (index) => {
     const newInstructions = formData.instructions.filter((_, i) => i !== index);
     setFormData(prev => ({ ...prev, instructions: newInstructions }));
-    clearRootError('instructionsRoot'); // Corregido de ingredientsRoot a instructionsRoot si aplica
+    clearRootError('instructionsRoot'); 
   };
 
-  // --- Validación ---
   const validateForm = () => {
     const newErrors = {};
     const { name, description, preparationTime, imageUrl, ingredients, instructions } = formData;
@@ -223,7 +216,7 @@ export function RecipeForm({ recipeId }) {
     }
     return newErrors;
   };
-  // --- Manejador de Gemini (MODIFICADO) ---
+
   const handleGenerateDraft = async () => {
     if (!magicPrompt.trim()) {
       setGenerationError("Por favor, escribe una idea para la receta.");
@@ -234,7 +227,6 @@ export function RecipeForm({ recipeId }) {
     setApiError(null);
 
     try {
-      // ¡CAMBIO! Llamamos a nuestro API Route seguro
       const res = await fetch('/api/generate-recipe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -256,8 +248,7 @@ export function RecipeForm({ recipeId }) {
         imageUrl: placeholderImageUrl,
         ingredients: draft.ingredients.length > 0 ? draft.ingredients : [{ name: '', quantity: '', unit_of_measure: '' }],
         instructions: draft.instructions.length > 0 ? draft.instructions : [''],
-        // Mantenemos los valores de type/visibility
-        type: formData.type,
+        type: draft.type,
         visibility: formData.visibility,
       });
 
@@ -273,12 +264,10 @@ export function RecipeForm({ recipeId }) {
     }
   };
 
-  // --- Manejador de Envío (Submit) (MODIFICADO) ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     setApiError(null);
 
-    // 1. Validación
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -290,7 +279,6 @@ export function RecipeForm({ recipeId }) {
     setErrors({});
     setStatus('submitting');
 
-    // 2. Transformación de Datos
     const validIngredients = formData.ingredients
       .filter(ing => ing && ing.name && ing.name.trim() !== '' && ing.unit_of_measure && ing.unit_of_measure.trim() !== '')
       .map(ing => {
@@ -332,9 +320,8 @@ export function RecipeForm({ recipeId }) {
         showToast('Receta creada', 'success');
       }
       
-      // ¡CAMBIO! Reemplazar setView por router.push
-      router.push('/'); // Volver al feed
-      router.refresh(); // Refresca los datos del feed
+      router.push('/'); 
+      router.refresh(); 
       
     } catch (err) {
       setApiError(err.message);
@@ -342,7 +329,6 @@ export function RecipeForm({ recipeId }) {
     }
   };
 
-  // --- Estados de Carga / Error (¡CAMBIO!) ---
   if (status === 'loading') {
     return (
       <div className="max-w-2xl mx-auto mt-10 p-8">
@@ -352,11 +338,8 @@ export function RecipeForm({ recipeId }) {
   }
 
   if (status === 'error') {
-    // ¡CAMBIO! onRetry ahora usa el router
     return <ErrorState message={apiError} onRetry={() => router.push('/')} />;
   }
-
-  // --- RENDERIZADO DEL FORMULARIO ---
   return (
     <div className="max-w-2xl mx-auto mt-10 p-8 bg-white rounded-lg shadow-xl mb-16">
       <h2 className="text-3xl font-bold text-center text-gray-900 mb-6">
@@ -574,13 +557,12 @@ export function RecipeForm({ recipeId }) {
               <p className="text-sm text-red-600 text-center">{apiError}</p>
             )}
 
-            {/* --- Botones de Acción (¡CAMBIO!) --- */}
+            {/* --- Botones de Acción --- */}
             <div className="flex gap-4 pt-4">
               
-              {/* ¡CAMBIO! Botón "Cancelar" ahora es un <Link> */}
+              {/*Botón "Cancelar" ahora es un <Link> */}
               <Link 
                 href="/" 
-                // Clases para que se vea como tu botón secundario
                 className="w-full text-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
               >
                 Cancelar

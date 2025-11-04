@@ -2,19 +2,16 @@
 
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button } from '@components/ui/Button'; // Ajusta la ruta
+import { Button } from '@components/ui/Button'; 
 
 export default function GlobalErrorPage({ error, reset }) {
   const router = useRouter();
 
   useEffect(() => {
-    // Loguear el error a un servicio de monitoreo (Sentry, LogRocket, etc.)
-    console.error(error);
   }, [error]);
 
   let friendlyMessage = 'Ocurrió un error inesperado.';
   
-  // Podemos personalizar el mensaje si queremos
   if (error.message === 'No se pudo cargar la receta') {
     friendlyMessage = 'No pudimos cargar esta receta. Es posible que sea privada, que no exista o que haya un error de conexión.';
   }
@@ -33,7 +30,6 @@ export default function GlobalErrorPage({ error, reset }) {
         </Button>
         <Button 
           onClick={
-            // 'reset' intenta volver a renderizar el segmento
             () => reset()
           }
         >

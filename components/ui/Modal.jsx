@@ -1,9 +1,3 @@
-// src/components/ui/Modal.jsx
-// ########################################################################
-// # Archivo: /src/components/ui/Modal.jsx
-// # Descripción: Componente genérico de Modal.
-// ########################################################################
-
 import React from 'react';
 import { XIcon } from './Icons';
 

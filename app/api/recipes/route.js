@@ -4,8 +4,9 @@ import { API_BASE_URL } from '@utils/constants';
 
 const TOKEN_NAME = 'auth_token';
 
-// --- GET (Público, para el Feed) ---
+
 export async function GET(request) {
+  const { searchParams } = new URL(request.url);
   const cookieStore = await cookies();
   const tokenCookie = cookieStore.get(TOKEN_NAME);
 
@@ -13,14 +14,14 @@ export async function GET(request) {
     'Content-Type': 'application/json',
   };
   
-  // Si tenemos un token, lo añadimos. Si no, no pasa nada.
+
   if (tokenCookie) {
     headers['Authorization'] = `Bearer ${tokenCookie.value}`;
   }
 
   try {
-    // Hacemos la petición (con o sin token)
-    const apiRes = await fetch(`${API_BASE_URL}/recipes`, {
+
+    const apiRes = await fetch(`${API_BASE_URL}/recipes?${searchParams.toString()}`, {
       method: 'GET',
       headers: headers,
     });
@@ -35,12 +36,10 @@ export async function GET(request) {
   }
 }
 
-// --- POST (Protegido, para Crear Receta) ---
 export async function POST(request) {
   const cookieStore = await cookies();
   const tokenCookie = cookieStore.get(TOKEN_NAME);
 
-  // ¡ESTE SÍ ES ESTRICTO! Si no hay token, falla.
   if (!tokenCookie) {
     return NextResponse.json({ message: 'No autorizado' }, { status: 401 });
   }
@@ -49,7 +48,7 @@ export async function POST(request) {
   const body = await request.json();
 
   try {
-    const apiRes = await fetch(`${API_BASE_URL}/recipes/create`, { // Tu endpoint de crear
+    const apiRes = await fetch(`${API_BASE_URL}/recipes/create`, { 
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -1,9 +1,3 @@
-// src/components/ui/Button.jsx
-// ########################################################################
-// # Archivo: /src/components/ui/Button.jsx
-// # Descripción: Componente genérico de Botón.
-// ########################################################################
-
 import React from 'react';
 
 export const Button = ({ children, onClick, type = 'button', variant = 'primary', isLoading = false, className = '', ...props }) => {

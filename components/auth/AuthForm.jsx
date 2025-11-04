@@ -1,16 +1,15 @@
-// components/auth/AuthForm.jsx
-'use client' // ¡Muy importante! Usa hooks.
+
+'use client' 
 
 import React, { useState } from 'react';
-import Link from 'next/link'; // 1. Importar Link
-import { useRouter } from 'next/navigation'; // 2. Importar useRouter
-import { useAuth } from '@context/AuthContext'; // Ajusta ruta
-import { useToast } from '@context/ToastContext'; // Ajusta ruta
-import { FormInput } from '@components/ui/FormInput'; // Ajusta ruta
-import { Button } from '@components/ui/Button'; // Ajusta ruta
-import { EyeIcon, EyeOffIcon } from '@components/ui/Icons'; // Ajusta ruta
+import Link from 'next/link';
+import { useRouter } from 'next/navigation'; 
+import { useAuth } from '@context/AuthContext';
+import { useToast } from '@context/ToastContext';
+import { FormInput } from '@components/ui/FormInput';
+import { Button } from '@components/ui/Button';
+import { EyeIcon, EyeOffIcon } from '@components/ui/Icons';
 
-// ... (Todas tus funciones de validación y PasswordStrengthMeter se quedan igual)
 const validateEmail = (email) => {
   if (!email) return "El email es requerido.";
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -50,7 +49,6 @@ const PasswordStrengthMeter = ({ password }) => {
   );
 };
 
-// 3. Quitamos la prop 'setView'
 export function AuthForm({ isRegister = false }) {
   const [formData, setFormData] = useState({ name: '', email: '', password: '', passwordConfirmation: '' });
   const [errors, setErrors] = useState({});
@@ -59,10 +57,9 @@ export function AuthForm({ isRegister = false }) {
   const [showPassword, setShowPassword] = useState(false);
   
   const { login, register } = useAuth();
-  const router = useRouter(); // 4. Inicializamos el router
+  const router = useRouter(); 
   const { showToast } = useToast();
 
-  // ... (handleChange y handleBlur se quedan igual)
  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -112,15 +109,13 @@ export function AuthForm({ isRegister = false }) {
         await register(formData.name, formData.email, formData.password, formData.passwordConfirmation);
         showToast('¡Registro exitoso! Ahora puedes iniciar sesión.', 'success');
         
-        // 5. Redirección con router
         router.push('/login'); 
       } else {
         await login(formData.email, formData.password);
         showToast('¡Bienvenido!', 'success');
         
-        // 6. Redirección a la home y 'refresh'
         router.push('/');
-        router.refresh(); // Esto refresca la data del servidor (actualiza el Navbar)
+        router.refresh(); 
       }
     } catch (err) {
       setApiError(err.message);
@@ -135,7 +130,6 @@ export function AuthForm({ isRegister = false }) {
         {isRegister ? 'Crear Cuenta' : 'Acceder'}
       </h2>
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {/* ... (Todo tu JSX del formulario se queda igual) ... */}
         {isRegister && (
           <FormInput id="name" label="Nombre" value={formData.name} onChange={handleChange} onBlur={handleBlur} error={errors.name} autoComplete="name" required />
         )}
@@ -168,7 +162,6 @@ export function AuthForm({ isRegister = false }) {
       <p className="text-sm text-center text-gray-600 mt-6">
         {isRegister ? '¿Ya tienes cuenta?' : '¿No tienes cuenta?'}
         
-        {/* 7. El botón de 'toggle' ahora es un <Link> */}
         <Link 
           href={isRegister ? '/login' : '/register'} 
           className="font-medium text-emerald-600 hover:text-emerald-500 ml-1"

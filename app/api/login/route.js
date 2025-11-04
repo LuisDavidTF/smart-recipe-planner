@@ -1,11 +1,11 @@
-// app/api/login/route.js
+
 import { NextResponse } from 'next/server';
 import { API_BASE_URL } from '@utils/constants';
 import { serialize } from 'cookie';
 
 export const maxDuration = 60; 
 const TOKEN_NAME = 'auth_token';
-const MAX_AGE = 60 * 60 * 24 * 7; // 1 semana
+const MAX_AGE = 60 * 60 * 24 * 7; 
 
 export async function POST(request) {
   try {
@@ -47,11 +47,9 @@ export async function POST(request) {
       secure: process.env.NODE_ENV === 'production',
       maxAge: MAX_AGE,
       path: '/',
-      sameSite: 'lax', // <-- ¡AQUÍ ESTÁ LA CORRECCIÓN!
+      sameSite: 'lax', 
     });
 
-    // (Paso de depuración opcional)
-    // console.log("Seteando cookie:", serializedCookie); 
 
     return NextResponse.json(
       { user: user },
@@ -64,7 +62,6 @@ export async function POST(request) {
     );
 
   } catch (error) {
-    console.error("Error en /api/login:", error.message); 
     return NextResponse.json(
       { message: 'Error interno del servidor', error: error.message },
       { status: 500 }

@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers'; // Helper de Next.js para leer cookies
+import { cookies } from 'next/headers';
 import { API_BASE_URL } from '@utils/constants';
+import { serialize } from 'cookie'; 
 
 const TOKEN_NAME = 'auth_token';
 
-// ¡AQUÍ ESTÁ LA CORRECCIÓN!
 export async function GET(request) {
-  // 1. Obtener la cookie del servidor
   const cookieStore = await cookies();
-  const tokenCookie = cookieStore.get(TOKEN_NAME); // <-- Ahora esto funciona
+  const tokenCookie = cookieStore.get(TOKEN_NAME);
 
   if (!tokenCookie) {
     return NextResponse.json({ message: 'No autorizado' }, { status: 401 });
@@ -17,28 +16,37 @@ export async function GET(request) {
   const token = tokenCookie.value;
 
   try {
-    // 2. Validar el token contra tu backend real
-    const apiRes = await fetch(`${API_BASE_URL}/profile`, { // Ajusta este endpoint
+    const apiRes = await fetch(`${API_BASE_URL}/users/me`, { 
       headers: {
         'Authorization': `Bearer ${token}`,
       },
+      cache: 'no-store', 
     });
 
-    const userData = await apiRes.json();
-
     if (!apiRes.ok) {
+      const errorData = await apiRes.json();
+      
+      const serializedCookie = serialize(TOKEN_NAME, '', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        expires: new Date(0), 
+        path: '/',
+        sameSite: 'lax',
+      });
+      
       return NextResponse.json(
-        { message: userData.message || 'Token inválido' },
-        { status: 401 }
+        { message: errorData.message || 'Token inválido' },
+        { status: apiRes.status, headers: { 'Set-Cookie': serializedCookie } }
       );
     }
 
-    // 3. Devolver los datos del usuario al cliente
-    return NextResponse.json({ user: userData.data || userData }, { status: 200 });
+    const user = await apiRes.json();
+
+    return NextResponse.json({ user: user }, { status: 200 });
 
   } catch (error) {
     return NextResponse.json(
-      { message: 'Error interno del servidor' },
+      { message: 'Error interno del servidor', error: error.message },
       { status: 500 }
     );
   }

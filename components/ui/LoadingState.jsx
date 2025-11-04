@@ -1,9 +1,3 @@
-// src/components/ui/LoadingState.jsx
-// ########################################################################
-// # Archivo: /src/components/ui/LoadingState.jsx
-// # Descripción: UI para el estado de carga (múltiples skeletons).
-// ########################################################################
-
 import React from 'react';
 import { SkeletonCard } from './SkeletonCard';
 

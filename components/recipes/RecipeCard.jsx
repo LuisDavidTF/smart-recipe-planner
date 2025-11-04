@@ -1,12 +1,11 @@
-// components/recipes/RecipeCard.jsx
-'use client' // Los hooks como useAuth requieren 'use client'
+
+'use client'
 
 import React from 'react';
-import Link from 'next/link'; // ¡¡IMPORTADO!!
-import { useAuth } from '@context/AuthContext'; // Ajusta ruta
-import { ClockIcon, EyeIcon, EditIcon, TrashIcon } from '@components/ui/Icons'; // Ajusta ruta
+import Link from 'next/link'; 
+import { useAuth } from '@context/AuthContext'; 
+import { ClockIcon, EyeIcon, EditIcon, TrashIcon } from '@components/ui/Icons'; 
 
-// ¡¡CAMBIO!! 'onView' se reemplaza por 'viewHref'
 export function RecipeCard({ recipe, viewHref, onEdit, onDelete }) {
   const { user } = useAuth();
   const isOwner = user && user.id === recipe.user_id;
@@ -37,11 +36,9 @@ export function RecipeCard({ recipe, viewHref, onEdit, onDelete }) {
       
       <div className="p-4 bg-gray-50 border-t flex gap-2">
         
-        {/* ¡¡CAMBIO CLAVE!! Esto ahora es un <Link> */}
         <Link 
           href={viewHref}
-          scroll={false} // Evita el scroll al abrir el modal
-          // Usamos TUS MISMOS estilos para que se vea igual
+          scroll={false} 
           className="flex-1 text-sm inline-flex items-center justify-center px-3 py-2 bg-white border border-gray-300 rounded-md shadow-xs text-gray-700 hover:bg-gray-100"
         >
           <EyeIcon className="w-4 h-4 mr-2" /> Ver
@@ -49,7 +46,6 @@ export function RecipeCard({ recipe, viewHref, onEdit, onDelete }) {
         
         {isOwner && (
           <>
-            {/* Estos siguen siendo botones porque son ACCIONES */}
             <button 
               onClick={() => onEdit(recipe)}
               className="flex-1 text-sm inline-flex items-center justify-center px-3 py-2 bg-white border border-gray-300 rounded-md shadow-xs text-blue-600 hover:bg-blue-50"

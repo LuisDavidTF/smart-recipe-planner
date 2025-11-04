@@ -1,9 +1,3 @@
-// src/context/ToastContext.jsx
-// ########################################################################
-// # Archivo: /src/context/ToastContext.jsx
-// # Descripción: Proveedor de notificaciones "Toast".
-// ########################################################################
-
 'use client'
 import React, { useState, useEffect, useContext, createContext } from 'react';
 

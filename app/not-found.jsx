@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 
-// Este componente NO necesita 'use client'
 export default function NotFound() {
   return (
     <div className="max-w-2xl mx-auto py-16 px-4 text-center bg-white min-h-screen">

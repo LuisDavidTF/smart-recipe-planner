@@ -1,9 +1,3 @@
-// src/components/ui/ErrorState.jsx
-// ########################################################################
-// # Archivo: /src/components/ui/ErrorState.jsx
-// # Descripción: UI para el estado de error.
-// ########################################################################
-
 import React from 'react';
 import { AlertTriangleIcon } from './Icons';
 

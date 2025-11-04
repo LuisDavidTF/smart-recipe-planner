@@ -1,30 +1,21 @@
 import { RecipeFeed } from '@components/recipes/RecipeFeed';
-import { createApiClient } from '../lib/apiClient'; // Usamos la ruta relativa correcta
+import { createApiClient } from '../lib/apiClient';
 
-/**
- * Esta función se ejecuta en el servidor.
- * No puede usar hooks como `useApiClient`.
- */
-async function getRecipes() {
+
+async function getRecipes(limit = 6) {
   try {
-    // Creamos una instancia del cliente de API para usar en el servidor.
-    const api = createApiClient(); 
-    const data = await api.getRecipes();
-    return data?.data || data || [];
+    const api = createApiClient();
+    const data = await api.getRecipes({ limit });
+    return data;
   } catch (error) {
-    console.error("Error fetching recipes on server:", error);
-    // En caso de error, devolvemos un array vacío para que la página no se rompa.
-    return [];
+    return { data: [], nextCursor: null };
   }
 }
 
-// La página ahora es un Componente de Servidor (async y sin 'use client')
 export default async function HomePage() {
-  // 1. Obtenemos las recetas en el servidor ANTES de renderizar.
-  const initialRecipes = await getRecipes();
+  const { data: initialRecipes, nextCursor } = await getRecipes(6);
 
-  // 2. Pasamos las recetas al componente de cliente que se encargará de la UI.
   return (
-    <RecipeFeed initialRecipes={initialRecipes} />
+    <RecipeFeed initialRecipes={initialRecipes || []} initialNextCursor={nextCursor} />
   );
 }

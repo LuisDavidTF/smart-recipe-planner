@@ -4,15 +4,13 @@ import { API_BASE_URL } from '@utils/constants';
 
 const TOKEN_NAME = 'auth_token';
 
-// --- GET (Público, para ver una receta en el modal) ---
 export async function GET(request, { params }) {
-  const { id } = await params; // Arreglo para 'params is a Promise'
+  const { id } = await params; 
   const cookieStore = await cookies();
   const tokenCookie = cookieStore.get(TOKEN_NAME);
 
-  const headers = {}; // No 'Content-Type' en GET
+  const headers = {};
   
-  // Arreglo de "Público": Adjunta el token si existe, pero no falla si no.
   if (tokenCookie) {
     headers['Authorization'] = `Bearer ${tokenCookie.value}`;
   }
@@ -33,12 +31,10 @@ export async function GET(request, { params }) {
   }
 }
 
-// --- Función de ayuda PROTEGIDA para PATCH y DELETE ---
 async function protectedRequest(request, endpoint) {
   const cookieStore = await cookies();
   const tokenCookie = cookieStore.get(TOKEN_NAME);
 
-  // ¡ESTA SÍ ES ESTRICTA!
   if (!tokenCookie) {
     return NextResponse.json({ message: 'No autorizado' }, { status: 401 });
   }
@@ -51,7 +47,6 @@ async function protectedRequest(request, endpoint) {
     'Authorization': `Bearer ${token}`,
   };
 
-  // Solo añade Content-Type si hay body
   if (method === 'PATCH') {
     body = await request.json();
     headers['Content-Type'] = 'application/json';
@@ -78,13 +73,11 @@ async function protectedRequest(request, endpoint) {
   }
 }
 
-// --- PATCH (Protegido, para Actualizar) ---
 export async function PATCH(request, { params }) {
   const { id } = await params;
   return protectedRequest(request, `/recipes/${id}`);
 }
 
-// --- DELETE (Protegido, para Borrar) ---
 export async function DELETE(request, { params }) {
   const { id } = await params;
   return protectedRequest(request, `/recipes/${id}`);

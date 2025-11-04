@@ -1,19 +1,16 @@
-// components/ui/Navbar.jsx
-'use client' // Necesario porque usa el hook useAuth y es interactivo
+'use client'
 
 import React from 'react';
-import Link from 'next/link'; // 1. Importar Link
-import { useRouter } from 'next/navigation'; // Importamos el router
-import { useAuth } from '@context/AuthContext'; // Ajusta la ruta
+import Link from 'next/link'; 
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@context/AuthContext';
 import { LogInIcon, LogOutIcon, PlusIcon, UserIcon } from './Icons';
 
-// 2. Quitamos la prop 'setView'
 export function Navbar() {
   const { isAuthenticated, logout, user } = useAuth();
-  const router = useRouter(); // Inicializamos el router
+  const router = useRouter(); 
   
   const getDisplayName = () => {
-    // ... (tu función getDisplayName se queda igual)
     if (!user || !user.name) return '';
     const nameParts = user.name.split(' ');
     if (nameParts.length > 1) {
@@ -23,9 +20,9 @@ export function Navbar() {
   };
   
   const handleLogoClick = (e) => {
-    e.preventDefault(); // Prevenimos la navegación por defecto del Link
-    router.push('/');   // Navegamos a la página de inicio
-    router.refresh();   // Forzamos la recarga de datos del servidor
+    e.preventDefault(); 
+    router.push('/'); 
+    router.refresh();
   };
   
   return (
@@ -33,7 +30,6 @@ export function Navbar() {
       <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           
-          {/* 3. El logo ahora es un Link a la home '/' */}
           <Link href="/" onClick={handleLogoClick} className="shrink-0 flex items-center">
             <span className="text-2xl font-bold text-emerald-600">
               SmartRecipe
@@ -47,7 +43,6 @@ export function Navbar() {
                   Hola, {getDisplayName()}
                 </span>
                 
-                {/* 4. 'Crear Receta' es un Link */}
                 <Link
                   href="/create-recipe"
                   className="flex items-center text-sm font-medium px-3 py-2 rounded-md text-white bg-emerald-600 hover:bg-emerald-700"
@@ -56,7 +51,6 @@ export function Navbar() {
                   Crear Receta
                 </Link>
                 
-                {/* 5. 'Logout' sigue siendo un botón, ¡esto es correcto! */}
                 <button
                   onClick={logout}
                   className="flex items-center text-sm font-medium px-3 py-2 rounded-md text-gray-600 hover:bg-gray-100"
@@ -67,7 +61,6 @@ export function Navbar() {
               </>
             ) : (
               <>
-                {/* 6. 'Acceder' es un Link */}
                 <Link
                   href="/login"
                   className="flex items-center text-sm font-medium px-3 py-2 rounded-md text-gray-600 hover:bg-gray-100"
@@ -76,7 +69,6 @@ export function Navbar() {
                   Acceder
                 </Link>
                 
-                {/* 7. 'Registrarse' es un Link */}
                 <Link
                   href="/register"
                   className="flex items-center text-sm font-medium px-3 py-2 rounded-md text-white bg-emerald-600 hover:bg-emerald-700"

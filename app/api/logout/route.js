@@ -1,4 +1,4 @@
-// app/api/logout/route.js
+
 import { NextResponse } from 'next/server';
 import { serialize } from 'cookie';
 
@@ -10,7 +10,7 @@ export async function POST() {
     secure: process.env.NODE_ENV === 'production',
     expires: new Date(0), 
     path: '/',
-    sameSite: 'lax', // <-- ¡AQUÍ ESTÁ LA CORRECCIÓN!
+    sameSite: 'lax', 
   });
 
   return NextResponse.json(

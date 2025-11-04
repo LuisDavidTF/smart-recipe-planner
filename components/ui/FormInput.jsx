@@ -1,9 +1,3 @@
-// src/components/ui/FormInput.jsx
-// ########################################################################
-// # Archivo: /src/components/ui/FormInput.jsx
-// # Descripción: Componente genérico de Input.
-// ########################################################################
-
 import React from 'react';
 
 export const FormInput = ({ id, label, type = 'text', value, onChange, error, ...props }) => {

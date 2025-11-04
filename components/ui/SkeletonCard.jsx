@@ -1,9 +1,3 @@
-// src/components/ui/SkeletonCard.jsx
-// ########################################################################
-// # Archivo: /src/components/ui/SkeletonCard.jsx
-// # Descripción: Estado de carga para la tarjeta de receta.
-// ########################################################################
-
 import React from 'react';
 
 export const SkeletonCard = () => (
