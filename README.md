@@ -4,12 +4,12 @@ Smart Recipe Planner is a web application that helps users plan their meals and 
 
 ## Features
 
-*   User authentication (login, logout, registration)
-*   Create, read, update, and delete recipes
-*   Generate new recipes using AI
-*   Browse a feed of recipes
-*   View individual recipes
-*   User-friendly and responsive interface
+*   **User Authentication:** Secure user registration, login, and logout functionality.
+*   **Recipe Management:** Users can create, view, update, and delete their own recipes.
+*   **AI-Powered Recipe Generation:** Generate new and creative recipes based on user prompts.
+*   **Interactive Recipe Feed:** Browse a dynamic feed of recipes from all users.
+*   **Modal Views:** View recipe details in a non-intrusive modal window for a seamless experience.
+*   **Responsive Design:** A user-friendly interface that works on all devices.
 
 ## Tech Stack
 
@@ -31,7 +31,7 @@ To get a local copy up and running, follow these simple steps.
 
 1.  Clone the repo
     ```sh
-    git clone https://github.com/your_username/smart-recipe-planner.git
+    git clone https://github.com/your_username/smart-recipe-planner-app.git
     ```
 2.  Install NPM packages
     ```sh
@@ -49,7 +49,7 @@ To get a local copy up and running, follow these simple steps.
     ```sh
     npm run dev
     ```
-3.  Open [http://localhost:5173](http://localhost:5173) with your browser to see the result.
+3.  Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## API Endpoints
 
@@ -68,35 +68,42 @@ The following API endpoints are available:
 ## Project Structure
 
 ```
-.
+smart-recipe-planner-app/
 ├── app/
-│   ├── api/
+│   ├── api/                # API routes
 │   │   ├── generate-recipe/
 │   │   ├── login/
 │   │   ├── logout/
 │   │   ├── me/
 │   │   └── recipes/
-│   ├── (main)/
-│   │   ├── create-recipe/
-│   │   ├── edit-recipe/
-│   │   ├── recipes/
-│   │   └── ...
-│   └── layout.js
+│   ├── @modal/             # Intercepted routes for modal views
+│   ├── create-recipe/      # Page for creating new recipes
+│   ├── edit-recipe/        # Page for editing existing recipes
+│   ├── recipes/            # Pages for displaying recipes
+│   ├── layout.jsx          # Root layout
+│   └── page.jsx            # Home page
 ├── components/
-│   ├── auth/
-│   ├── recipes/
-│   └── ui/
+│   ├── auth/               # Authentication-related components
+│   ├── recipes/            # Recipe-related components
+│   └── ui/                 # General UI components
 ├── context/
-│   ├── AuthContext.js
-│   └── ToastContext.js
+│   ├── AuthContext.jsx     # Context for managing authentication state
+│   └── ToastContext.jsx    # Context for displaying toast notifications
 ├── hooks/
-│   └── useApiClient.js
+│   └── useApiClient.js     # Custom hook for making API requests
 ├── lib/
-│   ├── apiClient.js
-│   └── constants.js
-├── public/
+│   └── apiClient.js        # API client setup
 └── ...
 ```
+
+## Key Components
+
+*   **`AuthForm`**: Handles both login and registration forms.
+*   **`RecipeCard`**: Displays a summary of a recipe in the feed.
+*   **`RecipeFeed`**: Fetches and displays a list of all recipes.
+*   **`RecipeForm`**: A form for creating and editing recipes.
+*   **`Modal`**: A reusable modal component for displaying content like recipe details.
+*   **`Navbar`**: The main navigation bar for the application.
 
 ## Contributing
 
@@ -107,7 +114,3 @@ Contributions are what make the open source community such an amazing place to l
 3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4.  Push to the Branch (`git push origin feature/AmazingFeature`)
 5.  Open a Pull Request
-
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
