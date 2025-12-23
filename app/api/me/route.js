@@ -16,7 +16,7 @@ export async function GET(request) {
   const token = tokenCookie.value;
 
   try {
-    const apiRes = await fetch(`${API_BASE_URL}/users/me`, { 
+    const apiRes = await fetch(`${API_BASE_URL}/auth/me`, { 
       headers: {
         'Authorization': `Bearer ${token}`,
       },

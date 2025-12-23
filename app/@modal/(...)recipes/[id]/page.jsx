@@ -118,16 +118,63 @@ export default function RecipeInterceptModal({ params }) {
     );
 }
 function RecipeDetailContent({ recipe }) {
+    // 1. Guard Clause: Prevención de "crash" si el modal se abre antes de que los datos carguen.
+    if (!recipe) return null;
+
     return (
         <>
-            <img src={recipe.image_url || 'https://placehold.co/600x400'} alt={recipe.name} className="w-full h-64 object-cover rounded-lg mb-4" />
-            <p className="text-gray-700 mb-4">{recipe.description}</p>
-            <p><strong>Tiempo:</strong> {recipe.preparation_time_minutes} min</p>
-            <p><strong>Por:</strong> {recipe.user?.name || 'Anónimo'}</p>
-            <h4 className="font-semibold mt-4 mb-2">Ingredientes:</h4>
-            <ul>{recipe.ingredients?.map((ing, i) => <li key={ing.id || i}>{ing.quantity} {ing.unit_of_measure} de {ing.ingredient.name}</li>) || <li>No listados</li>}</ul>
-            <h4 className="font-semibold mt-4 mb-2">Instrucciones:</h4>
-            <div>{recipe.instructions && Object.entries(recipe.instructions).map(([step, text]) => <p key={step}><strong>{step}:</strong> {text}</p>)}</div>
+            {/* Visual Stability: Definir aspect-ratio o altura fija evita saltos de layout si la imagen tarda en cargar */}
+            <img 
+                src={recipe.image_url || 'https://placehold.co/600x400'} 
+                alt={recipe.name} 
+                className="w-full h-64 object-cover rounded-lg mb-4 bg-gray-100" 
+            />
+            
+            <p className="text-gray-700 mb-4 text-sm leading-relaxed">{recipe.description}</p>
+            
+            <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-6">
+                <p><span className="font-bold text-gray-900">Tiempo:</span> {recipe.preparation_time_minutes} min</p>
+                <p><span className="font-bold text-gray-900">Por:</span> {recipe.user?.name || 'Anónimo'}</p>
+            </div>
+
+            {/* --- INGREDIENTES --- */}
+            <h4 className="font-bold text-gray-900 mt-4 mb-2">Ingredientes:</h4>
+            <ul className="list-disc list-inside mb-6 space-y-1 text-gray-700">
+                {/* Check explícito de .length para evitar renderizar contenedores vacíos */}
+                {recipe.ingredients?.length > 0 ? (
+                    recipe.ingredients.map((ing, i) => (
+                        <li key={ing.id || i}>
+                            <span className="font-medium">{ing.quantity} {ing.unit_of_measure}</span> de {ing.ingredient.name}
+                        </li>
+                    ))
+                ) : (
+                    <li className="text-gray-400 italic list-none">No hay ingredientes especificados.</li>
+                )}
+            </ul>
+
+            {/* --- INSTRUCCIONES (MIGRADO A ARRAY) --- */}
+            <h4 className="font-bold text-gray-900 mt-4 mb-2">Instrucciones:</h4>
+            <div className="space-y-3">
+                {/* ADAPTACIÓN A SCHEMA LIST<STRING>:
+                   - Eliminamos Object.entries() que causaría error con el nuevo array.
+                   - Usamos el índice del map (index + 1) para la numeración visual.
+                   - Flexbox para alineación: evita que el texto largo se meta debajo del número del paso.
+                */}
+                {recipe.instructions?.length > 0 ? (
+                    recipe.instructions.map((instruction, index) => (
+                        <div key={index} className="flex gap-3 text-sm">
+                            <span className="font-bold text-gray-900 whitespace-nowrap min-w-[3.5rem]">
+                                Paso {index + 1}:
+                            </span>
+                            <p className="text-gray-700 leading-relaxed">
+                                {instruction}
+                            </p>
+                        </div>
+                    ))
+                ) : (
+                    <p className="text-gray-400 italic">Sin instrucciones detalladas.</p>
+                )}
+            </div>
         </>
     );
 }

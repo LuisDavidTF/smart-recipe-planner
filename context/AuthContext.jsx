@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
   }, []); 
 
   const register = useCallback(async (name, email, password, passwordConfirmation) => {
-    const res = await fetch(`${API_BASE_URL}/users/register`, { 
+    const res = await fetch(`${API_BASE_URL}/auth/register`, { 
        method: 'POST',
        headers: { 'Content-Type': 'application/json' },
        body: JSON.stringify({ name, email, password, password_confirmation: passwordConfirmation }),
