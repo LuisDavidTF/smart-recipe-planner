@@ -9,6 +9,8 @@ export const metadata = {
   description: 'Descubre recetas increíbles',
 };
 
+export const preferredRegion = 'iad1';
+
 export default function RootLayout({ children, modal }) {
   return (
     <html lang="es">
