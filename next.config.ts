@@ -1,4 +1,15 @@
 import type { NextConfig } from "next";
+const withPWA = require("@ducanh2912/next-pwa").default({
+  dest: "public",
+  cacheOnFrontEndNav: true,
+  aggressiveFrontEndNavCaching: true,
+  reloadOnOnline: true,
+  swcMinify: true,
+  disable: process.env.NODE_ENV === "development",
+  workboxOptions: {
+    disableDevLogs: true,
+  },
+});
 
 const nextConfig: NextConfig = {
   // Disable the X-Powered-By header for security (hide technology stack)
@@ -10,8 +21,18 @@ const nextConfig: NextConfig = {
   // Image optimization configuration
   images: {
     formats: ['image/avif', 'image/webp'],
-    // Add domains here if you use external images immediately
-    // domains: ['example.com'], 
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+      },
+      // User provided images (allow any for now but unoptimized to prevent build errors if config missing)
+      // Ideally, you should restrict this to your specific S3 bucket or CDN.
+      {
+        protocol: 'https',
+        hostname: '**',
+      }
+    ],
   },
 
   // Security Headers for Production/Vercel

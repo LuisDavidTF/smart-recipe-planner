@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useApiClient } from '@hooks/useApiClient';
+import { useAuth } from '@context/AuthContext';
 import { useToast } from '@context/ToastContext';
 
 const INITIAL_STATE = {
@@ -17,6 +18,7 @@ const INITIAL_STATE = {
 export function useRecipeForm(recipeId) {
   const router = useRouter();
   const api = useApiClient();
+  const { user } = useAuth();
   const { showToast } = useToast();
   const isEditMode = !!recipeId;
 
@@ -37,6 +39,15 @@ export function useRecipeForm(recipeId) {
     api.getRecipeById(recipeId)
       .then(recipe => {
         if (!isMounted) return;
+
+        // --- SECURITY CHECK: Ownership Verification ---
+        // If user is logged in, ensure they own the recipe before letting them see the edit form.
+        // Falls back safely if user object isn't fully ready yet, but typically AuthContext loads first.
+        if (user && recipe.user && recipe.user.id !== user.id) {
+          showToast('No tienes permiso para editar esta receta.', 'error');
+          router.push('/');
+          return;
+        }
 
         // Legacy Support: Normalize 'instructions' to Array if backend returns Object
         let normalizedInstructions = [''];
@@ -103,8 +114,8 @@ export function useRecipeForm(recipeId) {
     setFormData(prev => {
       const list = [...prev[listName]];
       if (action === 'add') {
-        const item = listName === 'ingredients' 
-          ? { name: '', quantity: '', unit_of_measure: '' } 
+        const item = listName === 'ingredients'
+          ? { name: '', quantity: '', unit_of_measure: '' }
           : '';
         list.push(item);
       } else if (action === 'remove') {
@@ -116,10 +127,10 @@ export function useRecipeForm(recipeId) {
 
   const handleDraftLoaded = (draftData) => {
     setFormData(prev => ({
-        ...prev,
-        ...draftData,
-        // Ensure strictly array format from AI response
-        instructions: Array.isArray(draftData.instructions) ? draftData.instructions : ['']
+      ...prev,
+      ...draftData,
+      // Ensure strictly array format from AI response
+      instructions: Array.isArray(draftData.instructions) ? draftData.instructions : ['']
     }));
   };
 
@@ -150,7 +161,7 @@ export function useRecipeForm(recipeId) {
   const submit = async (e) => {
     e.preventDefault();
     setApiError(null);
-    
+
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -167,7 +178,7 @@ export function useRecipeForm(recipeId) {
       visibility: formData.visibility,
       preparation_time_minutes: parseInt(formData.preparationTime, 10),
       image_url: formData.imageUrl.trim(),
-      
+
       ingredients: formData.ingredients
         .filter(i => i.name.trim())
         .map(i => ({
@@ -180,7 +191,7 @@ export function useRecipeForm(recipeId) {
       // Sends ["Step 1", "Step 2"] directly to backend. 
       instructions: formData.instructions
         .map(s => s.trim())
-        .filter(s => s.length > 0) 
+        .filter(s => s.length > 0)
     };
 
     try {

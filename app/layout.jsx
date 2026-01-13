@@ -13,19 +13,36 @@ const inter = Inter({
 });
 
 // SEO & Metadata Configuration
+// SEO & Metadata Configuration
 export const metadata = {
-  title: {
-    template: '%s | Smart Recipe Planner',
-    default: 'Smart Recipe Planner', // Fallback title
+  title: "Smart Recipe Planner",
+  description: "Planifica tus comidas de manera inteligente y eficiente.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "RecipePlanner",
   },
-  description: 'Descubre, crea y organiza tus recetas favoritas de manera inteligente.',
-  keywords: ['recetas', 'cocina', 'planificador', 'smart recipe', 'comida'],
-  authors: [{ name: 'SmartRecipe Team' }],
-  viewport: 'width=device-width, initial-scale=1',
+  formatDetection: {
+    telephone: false,
+  },
   robots: {
     index: true,
     follow: true,
   },
+  icons: {
+    icon: '/icon.png',
+    shortcut: '/icon.png',
+    apple: '/icon.png',
+  },
+};
+
+export const viewport = {
+  themeColor: "#10b981",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export const preferredRegion = 'iad1'; // Vercel Edge region preference

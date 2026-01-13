@@ -1,0 +1,16 @@
+{
+    "name": "Smart Recipe Planner",
+    "short_name": "RecipePlanner",
+    "description": "Planifica tus comidas de manera inteligente y eficiente.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#10b981",
+    "icons": [
+        {
+            "src": "/icon.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}

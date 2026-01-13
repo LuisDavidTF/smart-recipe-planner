@@ -1,65 +1,97 @@
+'use client';
 
-'use client'
-
-import React from 'react';
-import Link from 'next/link'; 
-import { useAuth } from '@context/AuthContext'; 
-import { ClockIcon, EyeIcon, EditIcon, TrashIcon } from '@components/ui/Icons'; 
+import React, { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useAuth } from '@context/AuthContext';
+import { ClockIcon, EditIcon, TrashIcon, UserIcon } from '@components/ui/Icons';
 
 export function RecipeCard({ recipe, viewHref, onEdit, onDelete }) {
   const { user } = useAuth();
-  const isOwner = user && user.id === recipe.user_id;
+  // Safe accessor for user ID comparison
+  const isOwner = user && recipe.user && user.id === recipe.user.id;
 
-  const handleImageError = (e) => {
-    e.target.src = 'https://placehold.co/600x400/f3f4f6/9ca3af?text=Receta';
-  };
+  // Data correctness mapping from provided JSON
+  const imageUrl = recipe.image_url || 'https://placehold.co/600x400/f3f4f6/9ca3af?text=Sin+Imagen';
+  const prepTime = recipe.preparation_time_minutes || 0;
+  const authorName = recipe.user?.name || 'Chef Anónimo';
+  const type = recipe.type || 'General';
+
+  const [imgSrc, setImgSrc] = useState(imageUrl);
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col">
-      <img
-        src={recipe.image_url || 'https://placehold.co/600x400/f3f4f6/9ca3af?text=Receta'}
-        alt={recipe.name}
-        onError={handleImageError}
-        className="w-full h-48 object-cover"
-        loading="lazy"
-      />
-      <div className="p-5 flex flex-col grow">
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">{recipe.name}</h3>
-        <p className="text-gray-600 text-sm mb-4 line-clamp-3 grow">
-          {recipe.description}
-        </p>
-        <div className="flex items-center text-gray-500 text-sm mt-auto">
-          <ClockIcon className="w-4 h-4 mr-2" />
-          <span>{recipe.preparation_time_minutes || 'N/A'} min</span>
+    <div className="group bg-card rounded-2xl border border-gray-100/50 shadow-sm hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 flex flex-col h-full overflow-hidden">
+      {/* Image Container */}
+      <div className="relative w-full aspect-[4/3] overflow-hidden bg-gray-100">
+        <Image
+          src={imgSrc}
+          alt={recipe.name}
+          fill
+          className="object-cover group-hover:scale-110 transition-transform duration-700 ease-in-out"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          onError={() => setImgSrc('https://placehold.co/600x400/f3f4f6/9ca3af?text=Error+Carga')}
+          unoptimized={true} // Forcing unoptimized to ensure external URLs load without strict config for now
+        />
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/10 opacity-60 group-hover:opacity-80 transition-opacity duration-300 pointer-events-none" />
+
+        {/* Floating Badges */}
+        <div className="absolute top-3 right-3 z-10">
+          <span className="bg-white/95 backdrop-blur-md text-emerald-800 text-[10px] font-bold px-3 py-1.5 rounded-full shadow-lg uppercase tracking-wider">
+            {type}
+          </span>
+        </div>
+
+        <div className="absolute top-3 left-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          {isOwner && (
+            <div className="flex gap-2">
+              <button onClick={() => onEdit(recipe)} className="bg-white/90 p-2 rounded-full text-blue-600 hover:bg-blue-50 transition-colors shadow-sm">
+                <EditIcon className="w-4 h-4" />
+              </button>
+              <button onClick={() => onDelete(recipe)} className="bg-white/90 p-2 rounded-full text-red-600 hover:bg-red-50 transition-colors shadow-sm">
+                <TrashIcon className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className="absolute bottom-4 left-4 right-4 z-10 text-white">
+          <div className="flex items-center gap-4 text-xs font-medium mb-2">
+            <span className="flex items-center bg-black/40 px-2 py-1 rounded-md backdrop-blur-sm">
+              <ClockIcon className="w-3.5 h-3.5 mr-1.5 text-emerald-400" />
+              {prepTime} min
+            </span>
+            <span className="flex items-center bg-black/40 px-2 py-1 rounded-md backdrop-blur-sm">
+              <UserIcon className="w-3.5 h-3.5 mr-1.5 text-blue-400" />
+              {authorName}
+            </span>
+          </div>
+
         </div>
       </div>
-      
-      <div className="p-4 bg-gray-50 border-t flex gap-2">
-        
-        <Link 
-          href={viewHref}
-          scroll={false} 
-          className="flex-1 text-sm inline-flex items-center justify-center px-3 py-2 bg-white border border-gray-300 rounded-md shadow-xs text-gray-700 hover:bg-gray-100"
-        >
-          <EyeIcon className="w-4 h-4 mr-2" /> Ver
-        </Link>
-        
-        {isOwner && (
-          <>
-            <button 
-              onClick={() => onEdit(recipe)}
-              className="flex-1 text-sm inline-flex items-center justify-center px-3 py-2 bg-white border border-gray-300 rounded-md shadow-xs text-blue-600 hover:bg-blue-50"
-            >
-              <EditIcon className="w-4 h-4 mr-2" /> Editar
-            </button>
-            <button 
-              onClick={() => onDelete(recipe)}
-              className="flex-1 text-sm inline-flex items-center justify-center px-3 py-2 bg-white border border-gray-300 rounded-md shadow-xs text-red-600 hover:bg-red-50"
-            >
-              <TrashIcon className="w-4 h-4 mr-2" /> Elim.
-            </button>
-          </>
-        )}
+
+      {/* Content */}
+      <div className="p-5 flex flex-col flex-grow bg-white relative">
+        <h3 className="text-xl font-bold text-gray-900 mb-2 leading-tight group-hover:text-emerald-600 transition-colors" title={recipe.name}>
+          {recipe.name}
+        </h3>
+
+        <p className="text-gray-500 text-sm line-clamp-2 mb-4 flex-grow leading-relaxed font-light">
+          {recipe.description || 'Sin descripción disponible.'}
+        </p>
+
+        {/* Footer Actions */}
+        <div className="pt-4 mt-auto border-t border-gray-50">
+          <Link
+            href={viewHref}
+            className="w-full inline-flex items-center justify-center bg-emerald-50 text-emerald-700 hover:bg-emerald-600 hover:text-white px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 group/btn"
+          >
+            Ver Receta Completa
+            <svg className="w-4 h-4 ml-2 transform group-hover/btn:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </Link>
+        </div>
       </div>
     </div>
   );

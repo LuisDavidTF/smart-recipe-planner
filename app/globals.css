@@ -1,1 +1,140 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+/* 
+  Design System Tokens 
+  Standardized color palette and variables for consistent UI/UX.
+*/
+:root {
+  --primary: #10b981;
+  /* emerald-500 */
+  --primary-foreground: #ffffff;
+
+  --secondary: #3b82f6;
+  /* blue-500 */
+  --secondary-foreground: #ffffff;
+
+  --muted: #f3f4f6;
+  /* gray-100 */
+  --muted-foreground: #6b7280;
+  /* gray-500 */
+
+  --card: #ffffff;
+  --card-foreground: #111827;
+  /* gray-900 */
+
+  --accent: #f9fafb;
+  /* gray-50 */
+  --accent-foreground: #111827;
+
+  --destructive: #ef4444;
+  /* red-500 */
+  --destructive-foreground: #ffffff;
+
+  --border: #e5e7eb;
+  /* gray-200 */
+  --input: #e5e7eb;
+  --ring: #10b981;
+
+  --radius: 0.75rem;
+}
+
+/* Dark mode placeholder - can be activated by adding .dark class to html */
+.dark {
+  --primary: #059669;
+  /* emerald-600 */
+  --primary-foreground: #ffffff;
+
+  --secondary: #2563eb;
+  /* blue-600 */
+  --secondary-foreground: #ffffff;
+
+  --muted: #1f2937;
+  /* gray-800 */
+  --muted-foreground: #9ca3af;
+  /* gray-400 */
+
+  --card: #1f2937;
+  /* gray-800 */
+  --card-foreground: #f9fafb;
+  /* gray-50 */
+
+  --accent: #111827;
+  /* gray-900 */
+  --accent-foreground: #f9fafb;
+
+  --destructive: #7f1d1d;
+  /* red-900 */
+  --destructive-foreground: #fef2f2;
+
+  --border: #374151;
+  /* gray-700 */
+  --input: #374151;
+  --ring: #059669;
+}
+
+/* Global Resets & Utilities */
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  /* Prevent horizontal scrollbar/slide bar */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: #f3f4f6;
+  /* gray-100 base */
+  color: var(--card-foreground);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Utility to ensure main content fills space */
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Scrollbar Styling for Webkit */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--muted-foreground);
+  opacity: 0.5;
+  border-radius: 20px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary);
+}
