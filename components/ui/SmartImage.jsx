@@ -13,6 +13,9 @@ export function SmartImage({ src, alt, className, ...props }) {
     const [forceLoad, setForceLoad] = useState(false);
     const [loaded, setLoaded] = useState(false);
 
+    // Fallback immediately if no source
+    const effectiveSrc = src || 'https://placehold.co/600x400?text=No+Image';
+
     // Decide whether to show the real image
     const showImage = forceLoad || shouldLoadImage();
 
@@ -42,9 +45,9 @@ export function SmartImage({ src, alt, className, ...props }) {
 
     return (
         <img
-            src={src}
+            src={effectiveSrc}
             alt={alt}
-            className={`${className} transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
+            className={`${className} object-cover`}
             loading="lazy"
             onLoad={() => setLoaded(true)}
             onError={(e) => {

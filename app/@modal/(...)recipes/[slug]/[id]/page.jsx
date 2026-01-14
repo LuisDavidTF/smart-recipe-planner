@@ -1,4 +1,4 @@
-// app/@modal/(...)recipes/[id]/page.jsx
+// app/@modal/(...)recipes/[slug]/[id]/page.jsx
 'use client'
 
 import React, { useState, useEffect, use, Suspense } from 'react';
@@ -29,7 +29,8 @@ export default function RecipeInterceptModal({ params }) {
     const [error, setError] = useState(null);
     const [deleteModalState, setDeleteModalState] = useState({ isOpen: false });
 
-    const { id: recipeId } = use(params);
+    // Extract both params even if we only use ID
+    const { id: recipeId, slug: recipeSlug } = use(params);
 
     useEffect(() => {
         if (!recipeId) return;
@@ -77,9 +78,6 @@ export default function RecipeInterceptModal({ params }) {
                 }
             });
     }, [recipeId, api]);
-
-    // FIX: This check must be AFTER all hooks to prevent "Rendered fewer hooks than expected" error.
-    if (!pathname.startsWith('/recipes/')) return null;
 
     const handleClose = () => router.back();
 

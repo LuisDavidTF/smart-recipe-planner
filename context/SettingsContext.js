@@ -140,7 +140,15 @@ export function SettingsProvider({ children }) {
                 recipes: 'recetas',
                 clear: 'Borrar descargas',
                 clearing: 'Liberando...',
+                clear: 'Borrar descargas',
+                clearing: 'Liberando...',
                 storageDesc: 'Culina Smart administra el espacio automáticamente.'
+            },
+
+            notFound: {
+                title: 'Página no Encontrada',
+                message: 'Lo sentimos, no pudimos encontrar la página que buscas.',
+                backHome: 'Volver al inicio'
             }
         },
         en: {
@@ -269,7 +277,15 @@ export function SettingsProvider({ children }) {
                 recipes: 'recipes',
                 clear: 'Clear downloads',
                 clearing: 'Clearing...',
+                clear: 'Clear downloads',
+                clearing: 'Clearing...',
                 storageDesc: 'Culina Smart manages space automatically.'
+            },
+
+            notFound: {
+                title: 'Page Not Found',
+                message: 'Sorry, we could not find the page you are looking for.',
+                backHome: 'Back to Home'
             }
         },
         fr: {
@@ -398,7 +414,15 @@ export function SettingsProvider({ children }) {
                 recipes: 'recettes',
                 clear: 'Effacer les téléchargements',
                 clearing: 'Nettoyage...',
+                clear: 'Effacer les téléchargements',
+                clearing: 'Nettoyage...',
                 storageDesc: 'Culina Smart gère l\'espace automatiquement.'
+            },
+
+            notFound: {
+                title: 'Page Non Trouvée',
+                message: 'Désolé, nous n\'avons pas pu trouver la page que vous recherchez.',
+                backHome: 'Retour à l\'accueil'
             }
         }
     };

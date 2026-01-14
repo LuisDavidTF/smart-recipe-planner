@@ -7,6 +7,7 @@ import { useRecipeFeed } from '@hooks/useRecipeFeed';
 import { useApiClient } from '@hooks/useApiClient';
 import { useToast } from '@context/ToastContext';
 import { useSettings } from '@context/SettingsContext';
+import { slugify } from '@utils/slugify';
 
 // Components
 import { RecipeCard } from '@components/recipes/RecipeCard';
@@ -129,7 +130,7 @@ export function RecipeFeed({ initialData = null }) {
             <RecipeCard
               key={recipe.id}
               recipe={recipe}
-              viewHref={`/recipes/${recipe.id}`}
+              viewHref={`/recipes/${slugify(recipe.name)}/${recipe.id}`}
               onEdit={handleEdit}
               onDelete={handleDelete}
             />

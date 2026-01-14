@@ -61,15 +61,16 @@ export default function RootLayout({ children, modal }) {
         <AuthProvider>
           <SettingsProvider>
             <ToastProvider>
+              <div className="flex flex-col min-h-screen">
+                <Navbar />
 
-              <Navbar />
+                <main id="main-content" className="flex-grow">
+                  {children}
+                  {modal}
+                </main>
 
-              <main id="main-content" className="flex-grow">
-                {children}
-                {modal}
-              </main>
-
-              <Footer />
+                <Footer />
+              </div>
 
               <script
                 type="application/ld+json"
@@ -88,7 +89,6 @@ export default function RootLayout({ children, modal }) {
                   }),
                 }}
               />
-
             </ToastProvider>
           </SettingsProvider>
         </AuthProvider>

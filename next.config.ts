@@ -82,6 +82,11 @@ const nextConfig: NextConfig = {
   // Disable the X-Powered-By header for security (hide technology stack)
   poweredByHeader: false,
 
+  // Silence Turbopack/Webpack conflict error
+  // @ts-ignore
+  turbopack: {},
+
+
   // Enable compression for smaller payload sizes (default is true, explicit is better)
   compress: true,
 
