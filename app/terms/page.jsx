@@ -24,6 +24,11 @@ export default function TermsPage() {
                             Bienvenido a Culina Smart. Al acceder o utilizar esta aplicación web, aceptas quedar legalmente vinculado por los presentes Términos y Condiciones.
                             Si no estás de acuerdo con alguno de ellos, debes abstenerte de utilizar el servicio.
                         </p>
+                        <div className="bg-amber-500/10 border border-amber-500/20 p-4 rounded-lg mt-4">
+                            <p className="font-medium text-amber-700 dark:text-amber-400 text-sm">
+                                ⚠️ Advertencia de Edad: Este servicio está dirigido exclusivamente a usuarios mayores de 18 años. Los menores de edad solo podrán utilizar la plataforma bajo la supervisión directa y responsabilidad de un padre o tutor legal.
+                            </p>
+                        </div>
                     </section>
 
                     <section>
@@ -64,10 +69,26 @@ export default function TermsPage() {
 
                     <section>
                         <h2 className="text-xl font-semibold mb-3">5. Uso de Inteligencia Artificial</h2>
-                        <p>
-                            Las funciones de IA generan contenido de forma automática y no garantizan exactitud, seguridad alimentaria, valores nutricionales correctos o resultados reales.
-                            El contenido generado por IA es meramente informativo y debe ser verificado por el usuario.
+                        <p className="mb-4">
+                            Las funciones de IA generan contenido de forma automática y pueden presentar "alucinaciones" (información incorrecta o inventada).
                         </p>
+                        <div className="bg-destructive/10 border border-destructive/20 p-4 rounded-lg">
+                            <h3 className="font-bold text-destructive mb-2">⛔ DESCARGO DE RESPONSABILIDAD: SALUD Y SEGURIDAD ALIMENTARIA</h3>
+                            <ul className="list-disc pl-5 space-y-2 text-sm text-foreground/90">
+                                <li>
+                                    <strong>NO es asesoramiento médico ni nutricional:</strong> La IA no reemplaza el juicio de un profesional.
+                                </li>
+                                <li>
+                                    <strong>Riesgos de Alérgenos:</strong> La IA puede omitir ingredientes alérgenos graves o sugerir combinaciones peligrosas.
+                                </li>
+                                <li>
+                                    <strong>Seguridad Alimentaria:</strong> La IA puede sugerir tiempos de cocción inadecuados o prácticas de manipulación inseguras.
+                                </li>
+                                <li>
+                                    <strong>Responsabilidad del Usuario:</strong> Usted es el ÚNICO responsable de verificar cada ingrediente e instrucción antes de cocinar o consumir cualquier receta generada. Culina Smart NO asume responsabilidad alguna por reacciones alérgicas, enfermedades o daños derivados del uso de estas recetas.
+                                </li>
+                            </ul>
+                        </div>
                     </section>
 
                     <section>
@@ -94,14 +115,21 @@ export default function TermsPage() {
 
                     <section>
                         <h2 className="text-xl font-semibold mb-3">8. Limitación de Responsabilidad</h2>
-                        <p className="mb-2">El servicio se proporciona “tal como está”, sin garantías de ningún tipo. Culina Smart no garantiza:</p>
-                        <ul className="list-disc pl-5 space-y-1">
-                            <li>Disponibilidad continua</li>
-                            <li>Ausencia de errores</li>
-                            <li>Seguridad absoluta</li>
-                            <li>Exactitud del contenido</li>
+                        <p className="mb-2">
+                            El servicio se proporciona <strong>"AS IS" (TAL CUAL)</strong> y <strong>"SEGÚN DISPONIBILIDAD"</strong>. Culina Smart renuncia expresamente a todas las garantías, incluidas las implícitas de comerciabilidad e idoneidad para un propósito particular.
+                        </p>
+                        <ul className="list-disc pl-5 space-y-1 mb-4">
+                            <li>Disponibilidad continua o ininterrumpida del servicio.</li>
+                            <li>Ausencia de errores, virus u otros componentes dañinos.</li>
+                            <li>Seguridad absoluta de los datos transmitidos.</li>
+                            <li>Exactitud o fiabilidad del contenido.</li>
                         </ul>
-                        <p className="mt-2">En ningún caso Culina Smart será responsable por daños directos o indirectos derivados del uso del servicio.</p>
+                        <p className="font-medium text-sm">
+                            El usuario reconoce y acepta que el uso de servicios basados en internet conlleva riesgos inherentes de seguridad y que Culina Smart no puede garantizar que el servicio esté libre de ataques cibernéticos, interferencias o interrupciones técnicas.
+                        </p>
+                        <p className="mt-2 text-sm text-muted-foreground">
+                            En la medida máxima permitida por la ley, Culina Smart no será responsable por daños directos, indirectos, incidentales, especiales, consecuentes o punitivos resultantes del uso o la imposibilidad de uso del servicio.
+                        </p>
                     </section>
 
                     <section>

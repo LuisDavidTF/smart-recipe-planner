@@ -69,7 +69,24 @@ export default function PrivacyPage() {
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold mb-3">7. Derechos del Usuario (ARCO)</h2>
+                        <h2 className="text-xl font-semibold mb-3">7. Transferencia Internacional de Datos</h2>
+                        <div className="bg-blue-500/10 border border-blue-500/20 p-4 rounded-lg">
+                            <p className="mb-2">
+                                Para la prestación del servicio, Culina Smart utiliza infraestructura técnica de proveedores internacionales, lo que implica que sus datos pueden ser transferidos y procesados fuera de su país de residencia.
+                            </p>
+                            <ul className="list-disc pl-5 space-y-1 text-sm text-muted-foreground">
+                                <li><strong>Vercel:</strong> Alojamiento y despliegue (EE. UU. y global).</li>
+                                <li><strong>Neon:</strong> Base de datos (EE. UU. / Europa).</li>
+                                <li><strong>Koyeb:</strong> Servicios de backend (Global).</li>
+                            </ul>
+                            <p className="mt-3 font-medium">
+                                Al utilizar este servicio, usted otorga su consentimiento expreso e inequívoco para estas transferencias internacionales de datos necesarias para la operación técnica de la plataforma.
+                            </p>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2 className="text-xl font-semibold mb-3">8. Derechos del Usuario (ARCO)</h2>
                         <p className="mb-2">El usuario puede solicitar:</p>
                         <ul className="list-disc pl-5 space-y-1">
                             <li>Acceso</li>
@@ -77,18 +94,23 @@ export default function PrivacyPage() {
                             <li>Cancelación</li>
                             <li>Oposición</li>
                         </ul>
-                        <p className="mt-2">respecto a sus datos personales, contactando a través de los medios indicados en la plataforma.</p>
+                        <p className="mt-2">
+                            Para ejercer estos derechos, el usuario debe enviar una solicitud por escrito al siguiente correo electrónico: <strong className="text-primary">culinasmart@gmail.com</strong>.
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-1">
+                            La solicitud debe incluir nombre completo, descripción clara del derecho a ejercer y documentos que acrediten su identidad.
+                        </p>
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold mb-3">8. Conservación de Datos</h2>
+                        <h2 className="text-xl font-semibold mb-3">9. Conservación de Datos</h2>
                         <p>
                             Los datos se conservan mientras la cuenta esté activa o sea necesario para cumplir con las finalidades descritas.
                         </p>
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold mb-3">9. Cambios a esta Política</h2>
+                        <h2 className="text-xl font-semibold mb-3">10. Cambios a esta Política</h2>
                         <p>
                             Esta política puede modificarse en cualquier momento.
                             Los cambios se reflejarán en la fecha de actualización.

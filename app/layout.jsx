@@ -7,6 +7,7 @@ import { ToastProvider } from '@context/ToastContext';
 import { SettingsProvider } from '@context/SettingsContext';
 import { Navbar } from '@components/ui/Navbar';
 import { Footer } from '@components/ui/Footer';
+import { CookieConsent } from '@components/ui/CookieConsent';
 
 // Performance: Load Inter font with swap strategy to ensure text visibility during load
 const inter = Inter({
@@ -85,6 +86,8 @@ export default function RootLayout({ children, modal }) {
 
                 <Footer />
               </div>
+
+              <CookieConsent />
 
               <script
                 type="application/ld+json"
