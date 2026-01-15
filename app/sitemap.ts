@@ -5,8 +5,32 @@ import { RecipeService } from '@/lib/services/recipes';
 
 async function getAllRecipes() {
     try {
-        const response = await RecipeService.getAll({ limit: 100 }); // Reasonable limit for sitemap?
-        return response.data || [];
+        let allRecipes: any[] = [];
+        let cursor: string | null = null;
+        let hasMore = true;
+
+        while (hasMore) {
+            const params: any = { limit: 50 }; // Respect API limit
+            if (cursor) {
+                params.cursor = cursor;
+            }
+
+            const response = await RecipeService.getAll(params);
+            const recipes = response.data || [];
+
+            if (recipes.length > 0) {
+                allRecipes = [...allRecipes, ...recipes];
+            }
+
+            // Check for next cursor
+            if (response.meta && response.meta.nextCursor) {
+                cursor = response.meta.nextCursor;
+            } else {
+                hasMore = false;
+            }
+        }
+
+        return allRecipes;
     } catch (error) {
         console.error("Sitemap fetch error:", error);
         return [];
