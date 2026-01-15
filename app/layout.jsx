@@ -1,4 +1,5 @@
 import React from 'react';
+import Script from 'next/script';
 import './globals.css';
 import { Inter } from 'next/font/google';
 import { AuthProvider } from '@context/AuthContext';
@@ -54,6 +55,19 @@ export default function RootLayout({ children, modal }) {
   return (
     <html lang="es" className={inter.variable}>
       <body className="min-h-screen font-sans antialiased bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-X50BSFS1NL"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-X50BSFS1NL');
+          `}
+        </Script>
         {/* 
           Providers Wrapper 
           Keeps state management context at the root level.

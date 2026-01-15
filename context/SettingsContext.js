@@ -50,7 +50,12 @@ export function SettingsProvider({ children }) {
                 loginLink: 'Accede aquí',
                 registerLink: 'Regístrate',
                 welcome: '¡Bienvenido!',
-                registerSuccess: '¡Registro exitoso! Ahora puedes iniciar sesión.'
+                registerSuccess: '¡Registro exitoso! Ahora puedes iniciar sesión.',
+                termsAccept: 'Acepto ',
+                termsLink: 'Términos y Condiciones',
+                privacyLink: 'Política de Privacidad',
+                and: ' y ',
+                termsError: 'Debes aceptar los términos para continuar.'
             },
 
             createRecipe: {
@@ -86,7 +91,12 @@ export function SettingsProvider({ children }) {
                 magicPlaceholder: 'Ej: Pasta cremosa con champiñones para una cena rápida...',
                 magicBtn: 'Generar Borrador',
                 magicLoading: 'Generando borrador inteligente...',
-                magicError: 'No se pudo generar el borrador.'
+                magicBtn: 'Generar Borrador',
+                magicLoading: 'Generando borrador inteligente...',
+                magicError: 'No se pudo generar el borrador.',
+                magicDisclaimer: 'La IA puede cometer errores. Verifica la información antes de publicar.',
+                sensitiveWarn: 'Protege tu privacidad: No incluyas datos personales (teléfonos, direcciones) en la descripción.',
+                imageRights: 'Al usar esta URL, confirmas tener derecho a compartir esta imagen.'
             },
 
             feed: {
@@ -142,7 +152,10 @@ export function SettingsProvider({ children }) {
                 clearing: 'Liberando...',
                 clear: 'Borrar descargas',
                 clearing: 'Liberando...',
-                storageDesc: 'Culina Smart administra el espacio automáticamente.'
+                storageDesc: 'Culina Smart administra el espacio automáticamente.',
+                account: 'Cuenta y Privacidad',
+                deleteAccount: 'Eliminar mi cuenta',
+                deleteAccountDesc: 'Solicitar la baja permanente de tus datos.'
             },
 
             notFound: {
@@ -187,7 +200,12 @@ export function SettingsProvider({ children }) {
                 loginLink: 'Log In Here',
                 registerLink: 'Sign Up',
                 welcome: 'Welcome!',
-                registerSuccess: 'Registration successful! You can now log in.'
+                registerSuccess: 'Registration successful! You can now log in.',
+                termsAccept: 'I accept ',
+                termsLink: 'Terms and Conditions',
+                privacyLink: 'Privacy Policy',
+                and: ' and ',
+                termsError: 'You must accept the terms to continue.'
             },
 
             createRecipe: {
@@ -223,7 +241,12 @@ export function SettingsProvider({ children }) {
                 magicPlaceholder: 'E.g. Creamy mushroom pasta for a quick dinner...',
                 magicBtn: 'Generate Draft',
                 magicLoading: 'Generating smart draft...',
-                magicError: 'Could not generate draft.'
+                magicBtn: 'Generate Draft',
+                magicLoading: 'Generating smart draft...',
+                magicError: 'Could not generate draft.',
+                magicDisclaimer: 'AI can make mistakes. Verify info before publishing.',
+                sensitiveWarn: 'Protect your privacy: Do not include personal data (phones, addresses) in the description.',
+                imageRights: 'By using this URL, you confirm you have the right to share this image.'
             },
 
             feed: {
@@ -279,7 +302,10 @@ export function SettingsProvider({ children }) {
                 clearing: 'Clearing...',
                 clear: 'Clear downloads',
                 clearing: 'Clearing...',
-                storageDesc: 'Culina Smart manages space automatically.'
+                storageDesc: 'Culina Smart manages space automatically.',
+                account: 'Account & Privacy',
+                deleteAccount: 'Delete my account',
+                deleteAccountDesc: 'Request permanent deletion of your data.'
             },
 
             notFound: {
@@ -324,7 +350,12 @@ export function SettingsProvider({ children }) {
                 loginLink: 'Connectez-vous ici',
                 registerLink: 'Inscrivez-vous',
                 welcome: 'Bienvenue !',
-                registerSuccess: 'Inscription réussie ! Vous pouvez maintenant vous connecter.'
+                registerSuccess: 'Inscription réussie ! Vous pouvez maintenant vous connecter.',
+                termsAccept: 'J\'accepte ',
+                termsLink: 'Termes et Conditions',
+                privacyLink: 'Politique de Confidentialité',
+                and: ' et ',
+                termsError: 'Vous devez accepter les termes pour continuer.'
             },
 
             createRecipe: {
@@ -360,7 +391,12 @@ export function SettingsProvider({ children }) {
                 magicPlaceholder: 'Ex: Pâtes crémeuses aux champignons pour un dîner rapide...',
                 magicBtn: 'Générer Brouillon',
                 magicLoading: 'Génération du brouillon intelligent...',
-                magicError: 'Impossible de générer le brouillon.'
+                magicBtn: 'Générer Brouillon',
+                magicLoading: 'Génération du brouillon intelligent...',
+                magicError: 'Impossible de générer le brouillon.',
+                magicDisclaimer: 'L\'IA peut faire des erreurs. Vérifiez les infos avant de publier.',
+                sensitiveWarn: 'Protégez votre vie privée : N\'incluez pas de données personnelles.',
+                imageRights: 'En utilisant cette URL, vous confirmez avoir le droit de partager cette image.'
             },
 
             feed: {
@@ -416,7 +452,10 @@ export function SettingsProvider({ children }) {
                 clearing: 'Nettoyage...',
                 clear: 'Effacer les téléchargements',
                 clearing: 'Nettoyage...',
-                storageDesc: 'Culina Smart gère l\'espace automatiquement.'
+                storageDesc: 'Culina Smart gère l\'espace automatiquement.',
+                account: 'Compte et Confidentialité',
+                deleteAccount: 'Supprimer mon compte',
+                deleteAccountDesc: 'Demander la suppression définitive de vos données.'
             },
 
             notFound: {

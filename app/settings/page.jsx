@@ -172,6 +172,22 @@ export default function SettingsPage() {
                 </p>
             </SettingsSection>
 
+            {/* CUENTA Y PRIVACIDAD */}
+            <SettingsSection title={t.settings.account || 'Cuenta y Privacidad'}>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <p className="text-sm text-muted-foreground">
+                        {t.settings.deleteAccountDesc || 'Solicitar la baja permanente de tus datos.'}
+                    </p>
+                    <Button
+                        variant="ghost"
+                        disabled={true}
+                        className="text-destructive/50 border border-destructive/10 cursor-not-allowed"
+                    >
+                        {t.settings.deleteAccount || 'Eliminar mi cuenta'} (Próximamente)
+                    </Button>
+                </div>
+            </SettingsSection>
+
             <div className="text-center text-xs text-muted-foreground mt-8">
                 Culina Smart v1.2.0 • Build 2026
             </div>

@@ -18,6 +18,7 @@ export function AuthForm({ isRegister = false }) {
   const [apiError, setApiError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   const { login, register } = useAuth();
   const { t } = useSettings();
@@ -95,7 +96,9 @@ export function AuthForm({ isRegister = false }) {
       if (emailError) newErrors.email = emailError;
       const passStrength = validatePasswordStrength(formData.password);
       if (passStrength.strength === 'weak' || passStrength.strength === 'none') newErrors.password = passStrength.message;
+      if (passStrength.strength === 'weak' || passStrength.strength === 'none') newErrors.password = passStrength.message;
       if (formData.password !== formData.passwordConfirmation) newErrors.passwordConfirmation = t.auth.passMismatch;
+      if (!termsAccepted) newErrors.terms = t.auth.termsError;
     } else {
       if (!formData.email) newErrors.email = t.auth.emailReq;
       if (!formData.password) newErrors.password = t.auth.passwordReq;
@@ -164,6 +167,37 @@ export function AuthForm({ isRegister = false }) {
             {isRegister ? t.auth.registerBtn : t.auth.loginBtn}
           </Button>
         </div>
+        {isRegister && (
+          <div className="flex items-start gap-3 mt-4">
+            <div className="flex items-center h-5">
+              <input
+                id="terms"
+                name="terms"
+                type="checkbox"
+                checked={termsAccepted}
+                onChange={(e) => {
+                  setTermsAccepted(e.target.checked);
+                  if (errors.terms) setErrors(prev => ({ ...prev, terms: '' }));
+                }}
+                className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-900 transition duration-150 ease-in-out cursor-pointer"
+              />
+            </div>
+            <div className="text-sm">
+              <label htmlFor="terms" className="font-medium text-foreground cursor-pointer select-none">
+                {t.auth.termsAccept}
+                <Link href="/terms" className="text-primary hover:underline" target="_blank">
+                  {t.auth.termsLink}
+                </Link>
+                {t.auth.and}
+                <Link href="/privacy" className="text-primary hover:underline" target="_blank">
+                  {t.auth.privacyLink}
+                </Link>
+              </label>
+              {errors.terms && <p className="text-xs text-destructive mt-1">{errors.terms}</p>}
+            </div>
+          </div>
+        )}
+
       </form>
       <p className="text-sm text-center text-muted-foreground mt-6">
         {isRegister ? t.auth.haveAccount : t.auth.noAccount}

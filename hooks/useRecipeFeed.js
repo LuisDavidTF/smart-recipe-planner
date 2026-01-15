@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { useApiClient } from '@hooks/useApiClient';
 import { useToast } from '@context/ToastContext';
+import { feedCache } from '@utils/feedCache';
 
 /**
  * Custom hook to handle recipe fetching, pagination, and infinite scroll logic.
@@ -10,20 +11,11 @@ const STORAGE_KEY = 'culina_feed_cache';
 
 export function useRecipeFeed({ initialData } = {}) {
     // Helper to load from storage safely
-    const loadFromStorage = () => {
-        if (typeof window === 'undefined') return null;
-        try {
-            const cached = localStorage.getItem(STORAGE_KEY);
-            return cached ? JSON.parse(cached) : null;
-        } catch (e) {
-            console.error("Failed to load feed from storage", e);
-            return null;
-        }
-    };
+    // const loadFromStorage = () => { ... } // Replaced by feedCache.get()
 
     // Initialize state
     // Priority: 1. SSR Initial Data (Fresh) -> 2. LocalStorage (Offline/Back) -> 3. Empty
-    const cachedData = loadFromStorage();
+    const cachedData = feedCache.get();
 
     // HEURISTIC: If we have SSR data, we us usually prefer it. 
     // BUT if we are offline (network error likely on client hydration) or if the user expects to see their previous scroll position...
@@ -67,7 +59,7 @@ export function useRecipeFeed({ initialData } = {}) {
                 // but the cache has 50 recipes, WE SHOULD NOT OVERWRITE with 10.
                 // UNLESS the user explicitly refreshed (handled by clearing cache or explicit action).
 
-                const currentCache = loadFromStorage();
+                const currentCache = feedCache.get();
                 const cachedCount = currentCache?.recipes?.length || 0;
 
                 // If current state has FEWER or EQUAL recipes than cache, AND we are just starting up (isLoadingMore is false),
@@ -103,7 +95,7 @@ export function useRecipeFeed({ initialData } = {}) {
     // RESTORE / MERGE FROM STORAGE EFFECT
     useEffect(() => {
         // This runs on mount.
-        const cached = loadFromStorage();
+        const cached = feedCache.get();
 
         if (cached && cached.recipes?.length > 0) {
             setRecipes(currentRecipes => {
@@ -202,7 +194,7 @@ export function useRecipeFeed({ initialData } = {}) {
             console.error("Fetch initial failed", error);
 
             // Try to recover from storage if we haven't already
-            const cached = loadFromStorage();
+            const cached = feedCache.get();
             if (cached && cached.recipes?.length > 0) {
                 setRecipes(cached.recipes);
                 setNextCursor(cached.nextCursor);
@@ -261,6 +253,7 @@ export function useRecipeFeed({ initialData } = {}) {
 
     const removeRecipe = useCallback((id) => {
         setRecipes(prev => prev.filter(r => r.id !== id));
+        feedCache.removeRecipe(id); // Explicitly update cache on delete
     }, []);
 
     // Initial load effect

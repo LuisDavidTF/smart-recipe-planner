@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useApiClient } from '@hooks/useApiClient';
 import { useAuth } from '@context/AuthContext';
 import { useToast } from '@context/ToastContext';
+import { feedCache } from '@utils/feedCache';
 
 const INITIAL_STATE = {
   name: '',
@@ -212,6 +213,13 @@ export function useRecipeForm(recipeId) {
     try {
       if (isEditMode) {
         await api.updateRecipe(recipeId, payload);
+
+        // Update local cache immediately so the Feed reflects changes without reload
+        feedCache.updateRecipe({
+          id: recipeId,
+          ...payload
+        });
+
         showToast('Receta actualizada', 'success');
       } else {
         await api.createRecipe(payload);

@@ -141,6 +141,9 @@ export function MagicGenerator({ onDraftGenerated }) {
             {t.createRecipe.magicBtn}
           </Button>
         </div>
+        <p className="text-[10px] text-center text-muted-foreground mt-2 opacity-80">
+          {t.createRecipe.magicDisclaimer}
+        </p>
       </div>
     </div>
   );
