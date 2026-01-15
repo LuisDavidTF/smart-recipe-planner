@@ -93,11 +93,12 @@ export function RecipeFeed({ initialData = null }) {
           </p>
         </div>
 
-        {/* Manual Refresh Action */}
+
+        {/* Manual Refresh Action (Desktop/Non-Touch Only) */}
         <Button
           variant="primary"
           onClick={fetchInitialRecipes}
-          className="flex items-center gap-2 self-start sm:self-end text-sm shadow-sm"
+          className="hidden md:flex items-center gap-2 self-start sm:self-end text-sm shadow-sm"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -107,63 +108,73 @@ export function RecipeFeed({ initialData = null }) {
       </div>
 
       {/* Content Area - Switches based on status */}
-      {status === 'loading' ? (
-        <LoadingState showSlowLoadMessage={showSlowLoadMessage} />
-      ) : status === 'error' ? (
-        <ErrorState message={errorMessage} onRetry={fetchInitialRecipes} />
-      ) : recipes.length === 0 ? (
-        <div className="text-center py-20 bg-card rounded-xl border border-dashed border-border shadow-sm">
-          <p className="text-muted-foreground text-lg mb-4">{t.feed.empty}</p>
-          <Button
-            className="mt-2"
-            onClick={() => router.push('/create-recipe')}
-          >
-            {t.feed.createFirst}
-          </Button>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
-          {recipes.map((recipe) => (
-            <RecipeCard
-              key={recipe.id}
-              recipe={recipe}
-              viewHref={`/recipes/${slugify(recipe.name)}/${recipe.id}`}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-            />
-          ))}
-        </div>
-      )}
+      {
+        status === 'loading' ? (
+          <LoadingState showSlowLoadMessage={showSlowLoadMessage} />
+        ) : status === 'error' ? (
+          <ErrorState message={errorMessage} onRetry={fetchInitialRecipes} />
+        ) : recipes.length === 0 ? (
+          <div className="text-center py-20 bg-card rounded-xl border border-dashed border-border shadow-sm">
+            <p className="text-muted-foreground text-lg mb-4">{t.feed.empty}</p>
+            <Button
+              className="mt-2"
+              onClick={() => router.push('/create-recipe')}
+            >
+              {t.feed.createFirst}
+            </Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
+            {recipes.map((recipe) => (
+              <RecipeCard
+                key={recipe.id}
+                recipe={recipe}
+                viewHref={`/recipes/${slugify(recipe.name)}/${recipe.id}`}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            ))}
+          </div>
+        )
+      }
 
       {/* Pagination Sentinel - Only show if NO error and NOT loading */}
       {/* Hiding it while loading ensures that when it reappears, it triggers a FRESH intersection event if still visible */}
-      {!isErrorLoadingMore && !isLoadingMore && hasMore && (
-        <div ref={sentinelRef} aria-hidden="true" className="h-4 w-full" />
-      )}
+      {
+        !isErrorLoadingMore && !isLoadingMore && hasMore && (
+          <div ref={sentinelRef} aria-hidden="true" className="h-4 w-full" />
+        )
+      }
 
       {/* Manual Retry Button on Error */}
-      {isErrorLoadingMore && (
-        <div className="flex flex-col items-center justify-center py-8 gap-3">
-          <p className="text-sm text-destructive">{t.feed.error}</p>
-          <Button onClick={retryLoadMore} variant="outline" className="text-sm">
-            {t.feed.retry}
-          </Button>
-        </div>
-      )}
+      {
+        isErrorLoadingMore && (
+          <div className="flex flex-col items-center justify-center py-8 gap-3">
+            <p className="text-sm text-destructive">{t.feed.error}</p>
+            <Button onClick={retryLoadMore} variant="outline" className="text-sm">
+              {t.feed.retry}
+            </Button>
+          </div>
+        )
+      }
 
       {/* Loading More Indicator */}
-      {isLoadingMore && (
-        <div className="flex justify-center py-8">
-          <Spinner />
-        </div>
-      )}
+      {
+        isLoadingMore && (
+          <div className="flex justify-center py-8">
+            <Spinner />
+          </div>
+        )
+      }
 
       {/* End of Feed Message */}
-      {!hasMore && !isErrorLoadingMore && recipes.length > 0 && (
-        <div className="text-center py-12 border-t mt-12 border-border">
-          <p className="text-muted-foreground text-sm">{t.feed.end}</p>
-        </div>
-      )}
+      {
+        !hasMore && !isErrorLoadingMore && recipes.length > 0 && (
+          <div className="text-center py-12 border-t mt-12 border-border">
+            <p className="text-muted-foreground text-sm">{t.feed.end}</p>
+          </div>
+        )
+      }
 
       {/* Delete Confirmation Modal */}
       <Modal
@@ -191,6 +202,6 @@ export function RecipeFeed({ initialData = null }) {
           </div>
         </div>
       </Modal>
-    </div>
+    </div >
   );
 }

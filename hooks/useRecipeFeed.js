@@ -105,21 +105,63 @@ export function useRecipeFeed({ initialData } = {}) {
         // This runs on mount.
         const cached = loadFromStorage();
 
-        // Strategy:
-        // 1. If we have NO current recipes (error/empty), use cache.
-        // 2. If we DO have recipes (SSR Page 1), but cache has MORE (Page 1-5), USE CACHE (restore scroll position).
-        // 3. (Optional) If cache is same size but different content? Assume cache is stale? No, feed is chronological.
-
         if (cached && cached.recipes?.length > 0) {
-            if (recipes.length === 0 || cached.recipes.length > recipes.length) {
-                console.log(`Restoring/Merging Feed. Cache: ${cached.recipes.length}, Current: ${recipes.length}`);
-                setRecipes(cached.recipes);
-                setNextCursor(cached.nextCursor);
-                setHasMore(cached.hasMore);
-                setStatus('success');
-            }
+            setRecipes(currentRecipes => {
+                // 1. If we have NO current recipes (SSR failed/empty), use cache fully.
+                if (currentRecipes.length === 0) {
+                    console.log('Restoring full feed from cache (SSR empty)');
+                    // Restore cursor state too since we are adopting the full cache
+                    setNextCursor(cached.nextCursor);
+                    setHasMore(cached.hasMore);
+                    setStatus('success');
+                    return cached.recipes;
+                }
+
+                // 2. If we HAVE recipes (SSR Page 1), MERGE with cache.
+                // Strategy: Keep SSR data as "Truth" for Page 1. Append cached items that are NOT in SSR data.
+                // This ensures we show updated content ("Pasta v2") instead of stale cache ("Pasta v1"),
+                // while preserving the scroll history (Page 2-5) if it exists.
+
+                // If cache has fewer items than current, strictly ignoring cache might be better?
+                // But usually cache has MORE (history).
+                // Example: SSR=10, Cache=50. Result=50 (10 updated + 40 old).
+
+                const freshIds = new Set(currentRecipes.map(r => r.id));
+                const uniqueCached = cached.recipes.filter(r => !freshIds.has(r.id));
+
+                if (uniqueCached.length > 0) {
+                    console.log(`Merging Cache: Keeping ${currentRecipes.length} fresh, appending ${uniqueCached.length} from cache.`);
+                    // We expanded the list, so we should trust the CACHE's pagination state (nextCursor) 
+                    // because it corresponds to the longer list.
+                    setNextCursor(cached.nextCursor);
+                    setHasMore(cached.hasMore);
+                    return [...currentRecipes, ...uniqueCached];
+                }
+
+                return currentRecipes;
+            });
         }
     }, []); // Run once on mount
+
+    // LISTEN FOR INITIAL DATA UPDATES (e.g. router.refresh())
+    // When props change, we want to update the "Top" of the list with the new fresh data.
+    useEffect(() => {
+        if (initialData?.data && initialData.data.length > 0) {
+            setRecipes(prev => {
+                const fresh = initialData.data;
+                const freshIds = new Set(fresh.map(r => r.id));
+
+                // If we are effectively just replacing Page 1, perform the same Merge logic:
+                // New Page 1 + (Old List - items in New Page 1)
+                const uniqueOld = prev.filter(r => !freshIds.has(r.id));
+                return [...fresh, ...uniqueOld];
+            });
+            // Note: We generally don't reset pagination cursor here because we might have 10 pages loaded.
+            // Replacing Page 1 shouldn't invalidate the cursor for Page 10.
+            // Exception: If nextCursor changed in a way that implies a reset? 
+            // For now, preserving existing cursor is safest for "Update" actions.
+        }
+    }, [initialData]);
 
     // Slow Load Message
     useEffect(() => {
