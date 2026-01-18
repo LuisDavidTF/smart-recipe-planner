@@ -1,10 +1,10 @@
 import { cookies } from 'next/headers';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { RecipeService } from '@/lib/services/recipes';
 import RecipeClient from './RecipeClient';
 import { slugify } from '@utils/slugify';
 
-async function getRecipe(id) {
+async function getRecipe(id, currentSlug = null) {
     try {
         const cookieStore = await cookies();
         const token = cookieStore.get('auth_token')?.value;
@@ -14,6 +14,10 @@ async function getRecipe(id) {
         const data = await RecipeService.getById(id, token);
         return data;
     } catch (error) {
+        if (error?.status === 401) {
+            const callbackPath = currentSlug ? `/recipes/${currentSlug}/${id}` : `/`;
+            redirect(`/api/logout?callbackUrl=${encodeURIComponent(callbackPath)}`);
+        }
         console.error("SERVER FETCH ERROR:", error);
         return null;
     }
@@ -49,7 +53,7 @@ export async function generateMetadata({ params }) {
 
 export default async function RecipeCanonicalPage({ params }) {
     const { id, slug } = await params;
-    const recipe = await getRecipe(id);
+    const recipe = await getRecipe(id, slug);
 
     if (!recipe) {
         notFound();

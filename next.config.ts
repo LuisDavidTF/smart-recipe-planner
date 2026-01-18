@@ -17,12 +17,13 @@ const withPWA = require("@ducanh2912/next-pwa").default({
       // 1. App Pages (Navigation) - StaleWhileRevalidate for INSTANT load (Cache First feel, update in background)
       {
         urlPattern: ({ request }) => request.mode === 'navigate',
-        handler: 'StaleWhileRevalidate',
+        handler: 'NetworkFirst',
         options: {
           cacheName: 'pages',
           expiration: {
             maxEntries: 200,
           },
+          networkTimeoutSeconds: 3,
         },
       },
       // 2. Static Resources (JS, CSS, Fonts) - CacheFirst for performance
@@ -40,13 +41,14 @@ const withPWA = require("@ducanh2912/next-pwa").default({
       // 3. API - Recipes Feed (StaleWhileRevalidate)
       {
         urlPattern: /^https?.+\/api\/recipes.*/i,
-        handler: 'StaleWhileRevalidate',
+        handler: 'NetworkFirst',
         options: {
           cacheName: 'api-recipes-feed',
           expiration: {
             maxEntries: 50,
             maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
           },
+          networkTimeoutSeconds: 5,
         },
       },
       // 4. API - Others (NetworkFirst)

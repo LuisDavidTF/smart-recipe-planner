@@ -100,7 +100,8 @@ export const AuthProvider = ({ children }) => {
 
   // ...
 
-  const logout = useCallback(async () => {
+  const logout = useCallback(async (options = {}) => {
+    const { returnUrl } = options;
     try {
       await fetch('/api/logout', { method: 'POST' });
     } catch (error) {
@@ -108,10 +109,18 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
       if (typeof window !== 'undefined') {
         localStorage.removeItem('culina_user_session');
-        // PRIVACY: Clear ALL recipe caches (feed and visited) on logout
-        CacheManager.clearAll();
+        // PRIVACY: Clear ALL recipe caches ONLY if explicit logout (no returnUrl)
+        // If auto-logout (returnUrl exists), we preserve cache to restore feed state.
+        if (!returnUrl) {
+          CacheManager.clearAll();
+        }
       }
-      window.location.assign('/login');
+
+      const loginUrl = returnUrl
+        ? `/login?callbackUrl=${encodeURIComponent(returnUrl)}`
+        : '/login';
+
+      window.location.assign(loginUrl);
     }
   }, []);
 

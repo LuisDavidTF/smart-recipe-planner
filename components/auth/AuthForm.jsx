@@ -4,7 +4,7 @@
 // ... imports
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@context/AuthContext';
 import { useToast } from '@context/ToastContext';
 import { useSettings } from '@context/SettingsContext';
@@ -23,6 +23,8 @@ export function AuthForm({ isRegister = false }) {
   const { login, register } = useAuth();
   const { t } = useSettings();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl');
   const { showToast } = useToast();
 
   const validateEmail = (email) => {
@@ -123,7 +125,8 @@ export function AuthForm({ isRegister = false }) {
         await login(formData.email, formData.password);
         showToast(t.auth.welcome, 'success');
 
-        router.push('/');
+        const destination = callbackUrl || '/';
+        router.push(destination);
         router.refresh();
       }
     } catch (err) {

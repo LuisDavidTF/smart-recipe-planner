@@ -40,8 +40,7 @@ export function middleware(request) {
 
   if (!hasSession && isTryingToAccessProtectedRoute) {
     const loginUrl = new URL('/login', request.url);
-    // Optional: Add callbackUrl to preserve user destination
-    // loginUrl.searchParams.set('callbackUrl', pathname);
+    loginUrl.searchParams.set('callbackUrl', pathname);
     return NextResponse.redirect(loginUrl);
   }
 

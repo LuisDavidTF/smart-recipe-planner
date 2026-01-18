@@ -39,7 +39,10 @@ export const useApiClient = () => {
         const data = await response.json();
 
         if (response.status === 401) {
-          logout();
+          const returnUrl = typeof window !== 'undefined'
+            ? window.location.pathname + window.location.search
+            : null;
+          logout({ returnUrl });
           throw new Error('Tu sesión ha expirado. Por favor, inicia sesión de nuevo.');
         }
 
