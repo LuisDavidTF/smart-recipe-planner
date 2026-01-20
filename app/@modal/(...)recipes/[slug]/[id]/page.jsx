@@ -1,5 +1,6 @@
 // app/@modal/(...)recipes/[slug]/[id]/page.jsx
 'use client'
+export const runtime = 'edge';
 
 import React, { useState, useEffect, use, Suspense } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
