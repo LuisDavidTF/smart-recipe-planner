@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+export const runtime = 'edge';
 import { AuthService } from '@/lib/services/auth';
 
 export async function POST(request) {

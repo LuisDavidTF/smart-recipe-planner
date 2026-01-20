@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers';
+export const runtime = 'edge';
 import { notFound, redirect } from 'next/navigation';
 import { RecipeService } from '@/lib/services/recipes';
 import RecipeClient from './RecipeClient';

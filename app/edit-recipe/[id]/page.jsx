@@ -1,7 +1,8 @@
-'use client' 
+'use client'
+export const runtime = 'edge';
 
 import { use } from 'react';
-import { RecipeForm } from '@components/recipes/RecipeForm'; 
+import { RecipeForm } from '@components/recipes/RecipeForm';
 
 export default function EditRecipePage({ params }) {
   const { id } = use(params);

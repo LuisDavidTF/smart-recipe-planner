@@ -1,5 +1,7 @@
 
+
 import { NextResponse } from 'next/server';
+export const runtime = 'edge';
 import { serialize } from 'cookie';
 
 const TOKEN_NAME = 'auth_token';

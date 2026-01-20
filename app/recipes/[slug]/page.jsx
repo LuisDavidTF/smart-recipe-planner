@@ -1,4 +1,5 @@
 import { permanentRedirect, notFound } from 'next/navigation';
+export const runtime = 'edge';
 import { headers } from 'next/headers';
 import { slugify } from '@utils/slugify';
 

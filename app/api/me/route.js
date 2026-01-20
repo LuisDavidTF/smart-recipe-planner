@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+export const runtime = 'edge';
 import { cookies } from 'next/headers';
 import { AuthService } from '@/lib/services/auth';
 import { serialize } from 'cookie';
