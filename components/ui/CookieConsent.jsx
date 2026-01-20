@@ -29,7 +29,7 @@ export function CookieConsent() {
             <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="text-sm text-foreground/90 leading-relaxed text-center md:text-left">
                     <p>
-                        Utilizamos cookies propias y de terceros para mejorar su experiencia de navegación y analizar el uso del sitio.
+                        Utilizamos cookies propias y de terceros para mejorar su experiencia de navegación, analizar el uso del sitio y personalizar anuncios.
                     </p>
                     <p className="mt-1">
                         Al hacer clic en "Aceptar" o continuar navegando, usted acepta nuestra{' '}

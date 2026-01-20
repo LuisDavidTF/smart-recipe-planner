@@ -12,7 +12,7 @@ export default function PrivacyPage() {
             <div className="bg-card shadow-sm rounded-xl p-8 border border-border">
                 <h1 className="text-3xl font-bold text-foreground mb-2">Política de Privacidad</h1>
                 <p className="text-muted-foreground text-sm mb-8">
-                    Última actualización: 14 de enero de 2026
+                    Última actualización: 20 de enero de 2026
                 </p>
 
                 <div className="space-y-8 text-foreground leading-relaxed">
@@ -55,21 +55,36 @@ export default function PrivacyPage() {
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold mb-3">5. Protección de la Información</h2>
+                        <h2 className="text-xl font-semibold mb-3">5. Publicidad y Google AdSense</h2>
+                        <p className="mb-2">
+                            Utilizamos Google AdSense para mostrar anuncios. Google utiliza cookies para mostrar anuncios basados en sus visitas anteriores a nuestro sitio web u otros sitios web.
+                        </p>
+                        <ul className="list-disc pl-5 space-y-1">
+                            <li>
+                                El uso de cookies de publicidad por parte de Google le permite a él y a sus socios mostrar anuncios basados en sus visitas a sus sitios y/o a otros sitios de Internet.
+                            </li>
+                            <li>
+                                Los usuarios pueden inhabilitar la publicidad personalizada visitando la <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Configuración de anuncios</a>.
+                            </li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2 className="text-xl font-semibold mb-3">6. Protección de la Información</h2>
                         <p>
                             Se aplican medidas técnicas y organizativas razonables para proteger la información personal frente a accesos no autorizados, pérdida o alteración.
                         </p>
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold mb-3">6. Compartición de Datos</h2>
+                        <h2 className="text-xl font-semibold mb-3">7. Compartición de Datos</h2>
                         <p>
                             Culina Smart no vende ni cede datos personales a terceros, salvo obligación legal o requerimiento de autoridad competente.
                         </p>
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold mb-3">7. Transferencia Internacional de Datos</h2>
+                        <h2 className="text-xl font-semibold mb-3">8. Transferencia Internacional de Datos</h2>
                         <div className="bg-blue-500/10 border border-blue-500/20 p-4 rounded-lg">
                             <p className="mb-2">
                                 Para la prestación del servicio, Culina Smart utiliza infraestructura técnica de proveedores internacionales, lo que implica que sus datos pueden ser transferidos y procesados fuera de su país de residencia.
@@ -86,7 +101,7 @@ export default function PrivacyPage() {
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold mb-3">8. Derechos del Usuario (ARCO)</h2>
+                        <h2 className="text-xl font-semibold mb-3">9. Derechos del Usuario (ARCO)</h2>
                         <p className="mb-2">El usuario puede solicitar:</p>
                         <ul className="list-disc pl-5 space-y-1">
                             <li>Acceso</li>
@@ -103,14 +118,14 @@ export default function PrivacyPage() {
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold mb-3">9. Conservación de Datos</h2>
+                        <h2 className="text-xl font-semibold mb-3">10. Conservación de Datos</h2>
                         <p>
                             Los datos se conservan mientras la cuenta esté activa o sea necesario para cumplir con las finalidades descritas.
                         </p>
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold mb-3">10. Cambios a esta Política</h2>
+                        <h2 className="text-xl font-semibold mb-3">11. Cambios a esta Política</h2>
                         <p>
                             Esta política puede modificarse en cualquier momento.
                             Los cambios se reflejarán en la fecha de actualización.

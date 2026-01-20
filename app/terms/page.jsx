@@ -13,7 +13,7 @@ export default function TermsPage() {
             <div className="bg-card shadow-sm rounded-xl p-8 border border-border">
                 <h1 className="text-3xl font-bold text-foreground mb-2">Términos y Condiciones de Uso</h1>
                 <p className="text-muted-foreground text-sm mb-8">
-                    Última actualización: 14 de enero de 2026
+                    Última actualización: 20 de enero de 2026
                 </p>
 
                 <div className="space-y-8 text-foreground leading-relaxed">
@@ -102,7 +102,17 @@ export default function TermsPage() {
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold mb-3">7. Moderación y Eliminación de Contenido</h2>
+                        <h2 className="text-xl font-semibold mb-3">7. Enlaces a Terceros y Publicidad</h2>
+                        <p className="mb-2">
+                            El servicio puede contener enlaces a sitios web de terceros o mostrar anuncios publicitarios (incluyendo Google AdSense) que no son propiedad ni están controlados por Culina Smart.
+                        </p>
+                        <p>
+                            Culina Smart no controla ni asume responsabilidad alguna por el contenido, las políticas de privacidad o las prácticas de sitios web o servicios de terceros. El usuario reconoce y acepta que Culina Smart no será responsable, directa o indirectamente, de ningún daño o pérdida causados por el uso de dicho contenido, bienes o servicios disponibles a través de dichos sitios web o servicios.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2 className="text-xl font-semibold mb-3">8. Moderación y Eliminación de Contenido</h2>
                         <p className="mb-2">Culina Smart se reserva el derecho, sin obligación, de:</p>
                         <ul className="list-disc pl-5 space-y-1">
                             <li>Editar</li>
@@ -114,7 +124,7 @@ export default function TermsPage() {
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold mb-3">8. Limitación de Responsabilidad</h2>
+                        <h2 className="text-xl font-semibold mb-3">9. Limitación de Responsabilidad</h2>
                         <p className="mb-2">
                             El servicio se proporciona <strong>"AS IS" (TAL CUAL)</strong> y <strong>"SEGÚN DISPONIBILIDAD"</strong>. Culina Smart renuncia expresamente a todas las garantías, incluidas las implícitas de comerciabilidad e idoneidad para un propósito particular.
                         </p>
@@ -133,14 +143,14 @@ export default function TermsPage() {
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold mb-3">9. Terminación del Servicio</h2>
+                        <h2 className="text-xl font-semibold mb-3">10. Terminación del Servicio</h2>
                         <p>
                             Culina Smart puede suspender o cancelar cuentas que incumplan estos términos, de forma temporal o permanente.
                         </p>
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold mb-3">10. Modificaciones</h2>
+                        <h2 className="text-xl font-semibold mb-3">11. Modificaciones</h2>
                         <p>
                             Los términos pueden actualizarse en cualquier momento.
                             La fecha de actualización reflejará el último cambio y el uso continuado del servicio implica aceptación de los nuevos términos.
@@ -148,7 +158,7 @@ export default function TermsPage() {
                     </section>
 
                     <section>
-                        <h2 className="text-xl font-semibold mb-3">11. Ley Aplicable y Jurisdicción</h2>
+                        <h2 className="text-xl font-semibold mb-3">12. Ley Aplicable y Jurisdicción</h2>
                         <p>
                             Estos términos se rigen por las leyes aplicables de México, y cualquier controversia se someterá a los tribunales competentes del país.
                         </p>
