@@ -127,9 +127,9 @@ export function RecipeFeed({ initialData = null }) {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
             {recipes.map((recipe, index) => {
-              // Insert Ad every 6 items (index 5, 11, 17...)
+              // Insert Ad every 6 items (index 5, 11, 17...) if ads are enabled
               // 0-based index: 5 is the 6th item.
-              const shouldShowAd = (index > 0) && (index + 1) % 6 === 0;
+              const shouldShowAd = (process.env.NEXT_PUBLIC_ENABLE_ADS === 'true') && (index > 0) && (index + 1) % 6 === 0;
 
               return (
                 <React.Fragment key={recipe.id}>

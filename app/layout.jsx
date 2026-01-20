@@ -58,12 +58,14 @@ export default function RootLayout({ children, modal }) {
   return (
     <html lang="es" className={inter.variable}>
       <body className="min-h-screen font-sans antialiased bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2928206942835905"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
+        {process.env.NEXT_PUBLIC_ENABLE_ADS === 'true' && (
+          <Script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2928206942835905"
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        )}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-X50BSFS1NL"
           strategy="afterInteractive"
