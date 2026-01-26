@@ -14,9 +14,24 @@ export const AuthProvider = ({ children }) => {
   const checkUserSession = useCallback(async () => {
     try {
       const res = await fetch('/api/me');
-      if (!res.ok) {
-        throw new Error('No autenticado');
+
+      // 1. Explicitly handle 401 (Token Expired / Invalid)
+      if (res.status === 401) {
+        console.warn("Session expired (401). Clearing local session.");
+        setUser(null);
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('culina_user_session');
+          // Optional: clear other caches if needed, but session is critical
+        }
+        return; // STOP here. Do not throw, do not go to catch.
       }
+
+      // 2. Handle other errors (500, etc) -> throw to trigger offline logic
+      if (!res.ok) {
+        throw new Error('No autenticado o Error de Servidor');
+      }
+
+      // 3. Success (200 OK)
       const { user } = await res.json();
       setUser(user);
 
@@ -28,15 +43,17 @@ export const AuthProvider = ({ children }) => {
         profile_photo: user.profile_photo_url || user.profile_photo
       };
       localStorage.setItem('culina_user_session', JSON.stringify(safeUser));
+
     } catch (error) {
-      console.warn("Session check failed:", error);
-      // Offline Persistence: Try to restore session
+      console.warn("Session check failed (Network/Server):", error);
+      
+      // Offline Persistence: Only try to restore if it was NOT a 401 (which returns early)
+      // If we are here, it's likely a network error or 500.
       if (typeof window !== 'undefined') {
         const cachedUser = localStorage.getItem('culina_user_session');
         if (cachedUser) {
-          console.log("Restoring user session from cache");
+          console.log("Restoring user session from cache (Offline Mode)");
           setUser(JSON.parse(cachedUser));
-          // Don't clear error if we want to show 'Offline Mode' indicator
         } else {
           setUser(null);
         }
