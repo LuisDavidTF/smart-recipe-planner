@@ -3,6 +3,7 @@ import Dexie, { type EntityTable } from 'dexie';
 export interface LocalPantryItem {
     id?: number; // Local AutoIndexed ID
     ingredientId: number;
+    name: string; // Ingredient name for display
     quantity: number;
     unit: string; // 'L', 'ml', 'kg', 'pza'
     expirationDate?: string | null; // ISO Date YYYY-MM-DD

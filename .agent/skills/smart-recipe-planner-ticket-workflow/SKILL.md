@@ -28,15 +28,15 @@ When starting a ticket, create a branch from `dev` (create `dev` from `main` if 
 - `refactor`: Code restructuring
 
 **Examples**:
-- `feat/SRP-101-login-page`
-- `fix/SRP-105-header-alignment`
-- `chore/SRP-001-setup-eslint`
+- `feat/CSF-101-login-page`
+- `fix/CSF-105-header-alignment`
+- `chore/CSF-001-setup-eslint`
 
 **Command**:
 ```bash
 git checkout dev
 git pull origin dev
-git checkout -b feat/SRP-123-description
+git checkout -b feat/CSF-123-description
 ```
 
 ## 2. Commit Messages
@@ -64,16 +64,17 @@ When the ticket is complete:
 ```bash
 git checkout dev
 git pull origin dev
-git merge --no-ff feat/SRP-123-description
+git merge --no-ff feat/CSF-123-description
 git push origin dev
 ```
 
 ### D. Feature/Module Complete (PR to Main)
 When a full feature or module is completed on `dev`:
-1.  Create a Pull Request from `dev` to `main`.
-2.  Title: `Release: <Feature Name> (Module <X>)`
-3.  Description: List of included tickets/changes.
+1.  **Legal Audit**: Run the `legal-compliance` skill to verify T&C and Privacy adherence.
+2.  Create a Pull Request from `dev` to `main`.
+3.  Title: `Release: <Feature Name> (Module <X>)`
+4.  Description: List of included tickets/changes.
 
 ```bash
-gh pr create --base main --head dev --title "Release: User Auth Module" --body "Includes tickets SRP-101, SRP-102..."
+gh pr create --base main --head dev --title "Release: User Auth Module" --body "Includes tickets CSF-101, CSF-102... Verified Legal Compliance."
 ```

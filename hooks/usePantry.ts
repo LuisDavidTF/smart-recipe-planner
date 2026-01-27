@@ -1,9 +1,39 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, type LocalPantryItem } from '@/lib/db';
-import { useEffect } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
+import { useApiClient } from './useApiClient';
 
 export function usePantry() {
     const items = useLiveQuery(() => db.pantryItems.toArray());
+    const { syncPantry } = useApiClient();
+    const syncDebounceRef = useRef<NodeJS.Timeout>(null);
+
+    const syncToBackend = useCallback(async () => {
+        try {
+            if (!navigator.onLine) {
+                console.log('Offline: Skipping sync.');
+                return;
+            }
+            const currentItems = await db.pantryItems.toArray();
+            await syncPantry(currentItems.map(item => ({
+                ingredientId: item.ingredientId,
+                quantity: item.quantity,
+                unit: item.unit,
+                expirationDate: item.expirationDate
+            })));
+        } catch (error) {
+            console.error('Sync failed:', error);
+        }
+    }, [syncPantry]);
+
+    const scheduleSync = useCallback(() => {
+        if (syncDebounceRef.current) {
+            clearTimeout(syncDebounceRef.current);
+        }
+        syncDebounceRef.current = setTimeout(() => {
+            syncToBackend();
+        }, 4000); // 4 seconds debounce
+    }, [syncToBackend]);
 
     const addItem = async (item: Omit<LocalPantryItem, 'id' | 'isSynced'>) => {
         try {
@@ -11,6 +41,7 @@ export function usePantry() {
                 ...item,
                 isSynced: false,
             });
+            scheduleSync();
         } catch (error) {
             console.error('Failed to add item to pantry:', error);
             throw error;
@@ -23,6 +54,7 @@ export function usePantry() {
                 ...updates,
                 isSynced: false
             });
+            scheduleSync();
         } catch (error) {
             console.error('Failed to update pantry item:', error);
             throw error;
@@ -32,6 +64,7 @@ export function usePantry() {
     const removeItem = async (id: number) => {
         try {
             await db.pantryItems.delete(id);
+            scheduleSync();
         } catch (error) {
             console.error('Failed to delete pantry item:', error);
             throw error;
@@ -64,7 +97,14 @@ export function usePantry() {
             }
         };
         init();
-    }, []);
+
+        const handleOnline = () => {
+            console.log('Back online: Triggering sync...');
+            syncToBackend();
+        };
+        window.addEventListener('online', handleOnline);
+        return () => window.removeEventListener('online', handleOnline);
+    }, [syncToBackend]);
 
     return {
         items: items || [], // Ensure it always returns an array
