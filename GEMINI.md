@@ -24,6 +24,7 @@ Use these skills for detailed patterns on-demand:
 | `smart-recipe-planner-ui` | UI components and styling conventions | [SKILL.md](.agent/skills/smart-recipe-planner-ui/SKILL.md) |
 | `smart-recipe-planner-test-ui` | Frontend E2E testing patterns | [SKILL.md](.agent/skills/smart-recipe-planner-test-ui/SKILL.md) |
 | `smart-recipe-planner-git` | Git, Commits, and PR workflow | [SKILL.md](.agent/skills/smart-recipe-planner-git/SKILL.md) |
+| `smart-recipe-planner-ticket-workflow` | Ticket-based branching and merging workflow | [SKILL.md](.agent/skills/smart-recipe-planner-ticket-workflow/SKILL.md) |
 
 ### Auto-invoke Skills
 

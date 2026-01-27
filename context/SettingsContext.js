@@ -15,16 +15,28 @@ export function SettingsProvider({ children }) {
 
     const translations = {
         es: {
-            nav: { home: 'Inicio', create: 'Crear Receta', settings: 'Configuración', login: 'Acceder', register: 'Registrarse', logout: 'Salir', greeting: 'Hola,' },
+            nav: { home: 'Inicio', create: 'Crear Receta', settings: 'Configuración', login: 'Acceder', register: 'Registrarse', logout: 'Salir', greeting: 'Hola,', pantry: 'Despensa' },
 
-            nav: { home: 'Inicio', create: 'Crear Receta', settings: 'Configuración', login: 'Acceder', register: 'Registrarse', logout: 'Salir', greeting: 'Hola,' },
+            units: {
+                pza: 'Pieza(s)',
+                kg: 'Kilogramo(s)',
+                g: 'Gramo(s)',
+                L: 'Litro(s)',
+                ml: 'Mililitro(s)'
+            },
 
             common: {
                 rights: 'Todos los derechos reservados.',
                 edit: 'Editar',
                 delete: 'Eliminar',
                 cancel: 'Cancelar',
-                confirm: 'Confirmar'
+                confirm: 'Confirmar',
+                expired: 'Caducado',
+                expiresToday: 'Vence hoy',
+                expiresIn: 'Vence en',
+                days: 'días',
+                expiredPre: 'Caducó hace',
+                expiredPost: 'días'
             },
 
             auth: {
@@ -162,19 +174,55 @@ export function SettingsProvider({ children }) {
                 title: 'Página no Encontrada',
                 message: 'Lo sentimos, no pudimos encontrar la página que buscas.',
                 backHome: 'Volver al inicio'
+            },
+
+            pantry: {
+                title: 'Mi Despensa',
+                subtitle: 'Gestiona tus ingredientes para cocinar siempre fresco.',
+                registeredProducts: 'productos registrados',
+                addProduct: 'Agregar Producto',
+                noIngredients: 'No tienes ingredientes en tu despensa. ¡Agrega el primero!',
+                total: 'Total:',
+                attention: 'Atención',
+                addExistencia: 'Agregar Existencia',
+                editExistencia: 'Editar Existencia',
+                addExistenciaTitle: 'Agregar Nueva Existencia',
+                deleteExistencia: '¿Eliminar esta existencia?',
+                name: 'Nombre',
+                namePlaceholder: 'Ej. Leche, Huevos...',
+                quantity: 'Cantidad',
+                qtyPlaceholder: 'Ej. 1.5',
+                unit: 'Unidad',
+                expiration: 'Caducidad',
+                optional: 'Opcional',
+                cancel: 'Cancelar',
+                save: 'Guardar',
+                saving: 'Guardando...'
             }
         },
         en: {
-            nav: { home: 'Home', create: 'New Recipe', settings: 'Settings', login: 'Log In', register: 'Sign Up', logout: 'Log Out', greeting: 'Hi,' },
+            nav: { home: 'Home', create: 'New Recipe', settings: 'Settings', login: 'Log In', register: 'Sign Up', logout: 'Log Out', greeting: 'Hi,', pantry: 'Pantry' },
 
-            nav: { home: 'Home', create: 'New Recipe', settings: 'Settings', login: 'Log In', register: 'Sign Up', logout: 'Log Out', greeting: 'Hi,' },
+            units: {
+                pza: 'Piece(s)',
+                kg: 'Kilogram(s)',
+                g: 'Gram(s)',
+                L: 'Liter(s)',
+                ml: 'Milliliter(s)'
+            },
 
             common: {
                 rights: 'All rights reserved.',
                 edit: 'Edit',
                 delete: 'Delete',
                 cancel: 'Cancel',
-                confirm: 'Confirm'
+                confirm: 'Confirm',
+                expired: 'Expired',
+                expiresToday: 'Expires today',
+                expiresIn: 'Expires in',
+                days: 'days',
+                expiredPre: 'Expired',
+                expiredPost: 'days ago'
             },
 
             auth: {
@@ -312,19 +360,55 @@ export function SettingsProvider({ children }) {
                 title: 'Page Not Found',
                 message: 'Sorry, we could not find the page you are looking for.',
                 backHome: 'Back to Home'
+            },
+
+            pantry: {
+                title: 'My Pantry',
+                subtitle: 'Manage your ingredients to cook always fresh.',
+                registeredProducts: 'registered products',
+                addProduct: 'Add Product',
+                noIngredients: 'You have no ingredients in your pantry. Add the first one!',
+                total: 'Total:',
+                attention: 'Attention',
+                addExistencia: 'Add Stock',
+                editExistencia: 'Edit Stock',
+                addExistenciaTitle: 'Add New Stock',
+                deleteExistencia: 'Delete this stock?',
+                name: 'Name',
+                namePlaceholder: 'E.g. Milk, Eggs...',
+                quantity: 'Quantity',
+                qtyPlaceholder: 'E.g. 1.5',
+                unit: 'Unit',
+                expiration: 'Expiration',
+                optional: 'Optional',
+                cancel: 'Cancel',
+                save: 'Save',
+                saving: 'Saving...'
             }
         },
         fr: {
-            nav: { home: 'Accueil', create: 'Créer Recette', settings: 'Paramètres', login: 'Connexion', register: 'S\'inscrire', logout: 'Déconnexion', greeting: 'Bonjour,' },
+            nav: { home: 'Accueil', create: 'Créer Recette', settings: 'Paramètres', login: 'Connexion', register: 'S\'inscrire', logout: 'Déconnexion', greeting: 'Bonjour,', pantry: 'Garde-manger' },
 
-            nav: { home: 'Accueil', create: 'Créer Recette', settings: 'Paramètres', login: 'Connexion', register: 'S\'inscrire', logout: 'Déconnexion', greeting: 'Bonjour,' },
+            units: {
+                pza: 'Pièce(s)',
+                kg: 'Kilogramme(s)',
+                g: 'Gramme(s)',
+                L: 'Litre(s)',
+                ml: 'Millilitre(s)'
+            },
 
             common: {
                 rights: 'Tous droits réservés.',
                 edit: 'Modifier',
                 delete: 'Supprimer',
                 cancel: 'Annuler',
-                confirm: 'Confirmer'
+                confirm: 'Confirmer',
+                expired: 'Expiré',
+                expiresToday: 'Expire aujourd\'hui',
+                expiresIn: 'Expire dans',
+                days: 'jours',
+                expiredPre: 'Expiré il y a',
+                expiredPost: 'jours'
             },
 
             auth: {
@@ -462,6 +546,30 @@ export function SettingsProvider({ children }) {
                 title: 'Page Non Trouvée',
                 message: 'Désolé, nous n\'avons pas pu trouver la page que vous recherchez.',
                 backHome: 'Retour à l\'accueil'
+            },
+
+            pantry: {
+                title: 'Mon Garde-manger',
+                subtitle: 'Gérez vos ingrédients pour cuisiner toujours frais.',
+                registeredProducts: 'produits enregistrés',
+                addProduct: 'Ajouter Produit',
+                noIngredients: 'Vous n\'avez pas d\'ingrédients dans votre garde-manger. Ajoutez le premier !',
+                total: 'Total :',
+                attention: 'Attention',
+                addExistencia: 'Ajouter Stock',
+                editExistencia: 'Modifier Stock',
+                addExistenciaTitle: 'Ajouter Nouveau Stock',
+                deleteExistencia: 'Supprimer ce stock ?',
+                name: 'Nom',
+                namePlaceholder: 'Ex. Lait, Œufs...',
+                quantity: 'Quantité',
+                qtyPlaceholder: 'Ex. 1.5',
+                unit: 'Unité',
+                expiration: 'Expiration',
+                optional: 'Optionnel',
+                cancel: 'Annuler',
+                save: 'Enregistrer',
+                saving: 'Enregistrement...'
             }
         }
     };
