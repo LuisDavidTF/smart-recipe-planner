@@ -62,12 +62,37 @@ export default async function RecipeCanonicalPage({ params }) {
 
     const correctSlug = slugify(recipe.name);
 
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Recipe',
+        name: recipe.name,
+        description: recipe.description,
+        image: recipe.imageUrl ? [recipe.imageUrl] : [],
+        author: {
+            '@type': 'Person',
+            name: recipe.authorName || recipe.user?.name || 'Culina Smart User',
+        },
+        datePublished: recipe.created_at,
+        prepTime: recipe.preparationTimeMinutes ? `PT${recipe.preparationTimeMinutes}M` : undefined,
+        recipeIngredient: recipe.ingredients?.map((i) => `${i.quantity} ${i.unitOfMeasure || i.unit_of_measure} ${i.name || i.ingredient?.name}`),
+        recipeInstructions: recipe.instructions?.map((inst) => ({
+            '@type': 'HowToStep',
+            text: inst,
+        })),
+    };
+
     return (
-        <RecipeClient
-            recipe={recipe}
-            recipeId={id}
-            currentSlug={slug}
-            correctSlug={correctSlug}
-        />
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <RecipeClient
+                recipe={recipe}
+                recipeId={id}
+                currentSlug={slug}
+                correctSlug={correctSlug}
+            />
+        </>
     );
 }
