@@ -103,8 +103,7 @@ export function SettingsProvider({ children }) {
                 magicPlaceholder: 'Ej: Pasta cremosa con champiñones para una cena rápida...',
                 magicBtn: 'Generar Borrador',
                 magicLoading: 'Generando borrador inteligente...',
-                magicBtn: 'Generar Borrador',
-                magicLoading: 'Generando borrador inteligente...',
+
                 magicError: 'No se pudo generar el borrador.',
                 magicDisclaimer: 'La IA puede cometer errores. Verifica la información antes de publicar.',
                 sensitiveWarn: 'Protege tu privacidad: No incluyas datos personales (teléfonos, direcciones) en la descripción.',
@@ -162,8 +161,7 @@ export function SettingsProvider({ children }) {
                 recipes: 'recetas',
                 clear: 'Borrar descargas',
                 clearing: 'Liberando...',
-                clear: 'Borrar descargas',
-                clearing: 'Liberando...',
+
                 storageDesc: 'Culina Smart administra el espacio automáticamente.',
                 account: 'Cuenta y Privacidad',
                 deleteAccount: 'Eliminar mi cuenta',
@@ -289,8 +287,7 @@ export function SettingsProvider({ children }) {
                 magicPlaceholder: 'E.g. Creamy mushroom pasta for a quick dinner...',
                 magicBtn: 'Generate Draft',
                 magicLoading: 'Generating smart draft...',
-                magicBtn: 'Generate Draft',
-                magicLoading: 'Generating smart draft...',
+
                 magicError: 'Could not generate draft.',
                 magicDisclaimer: 'AI can make mistakes. Verify info before publishing.',
                 sensitiveWarn: 'Protect your privacy: Do not include personal data (phones, addresses) in the description.',
@@ -348,8 +345,7 @@ export function SettingsProvider({ children }) {
                 recipes: 'recipes',
                 clear: 'Clear downloads',
                 clearing: 'Clearing...',
-                clear: 'Clear downloads',
-                clearing: 'Clearing...',
+
                 storageDesc: 'Culina Smart manages space automatically.',
                 account: 'Account & Privacy',
                 deleteAccount: 'Delete my account',
@@ -475,8 +471,7 @@ export function SettingsProvider({ children }) {
                 magicPlaceholder: 'Ex: Pâtes crémeuses aux champignons pour un dîner rapide...',
                 magicBtn: 'Générer Brouillon',
                 magicLoading: 'Génération du brouillon intelligent...',
-                magicBtn: 'Générer Brouillon',
-                magicLoading: 'Génération du brouillon intelligent...',
+
                 magicError: 'Impossible de générer le brouillon.',
                 magicDisclaimer: 'L\'IA peut faire des erreurs. Vérifiez les infos avant de publier.',
                 sensitiveWarn: 'Protégez votre vie privée : N\'incluez pas de données personnelles.',
@@ -534,8 +529,7 @@ export function SettingsProvider({ children }) {
                 recipes: 'recettes',
                 clear: 'Effacer les téléchargements',
                 clearing: 'Nettoyage...',
-                clear: 'Effacer les téléchargements',
-                clearing: 'Nettoyage...',
+
                 storageDesc: 'Culina Smart gère l\'espace automatiquement.',
                 account: 'Compte et Confidentialité',
                 deleteAccount: 'Supprimer mon compte',
