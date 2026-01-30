@@ -10,6 +10,8 @@ import { useSettings } from '@context/SettingsContext';
  */
 export function SmartImage({ src, alt, className, ...props }) {
     const { shouldLoadImage } = useSettings();
+    const [forceLoad, setForceLoad] = useState(false);
+    const [loaded, setLoaded] = useState(false);
     const [error, setError] = useState(false);
 
     // Fallback immediately if no source
