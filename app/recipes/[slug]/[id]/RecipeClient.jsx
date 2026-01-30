@@ -16,8 +16,24 @@ import { Modal } from '@components/ui/Modal';
 // Global map to track in-flight requests for deduplication
 const IN_FLIGHT_REQUESTS = new Map();
 
+// Helper to normalize recipe keys (snake_case -> camelCase fallback)
+// This ensures that if we load from a cache that stored DB row format, we can still read properties consistently.
+const normalizeRecipeData = (data) => {
+    if (!data) return null;
+    return {
+        ...data,
+        // Ensure consistent accessors
+        imageUrl: data.imageUrl || data.image_url,
+        preparationTimeMinutes: data.preparationTimeMinutes || data.preparation_time_minutes,
+        authorName: data.authorName || data.author_name || data.user?.name,
+        // Ensure ingredients/instructions are arrays
+        ingredients: Array.isArray(data.ingredients) ? data.ingredients : [],
+        instructions: Array.isArray(data.instructions) ? data.instructions : [],
+    };
+};
+
 function useRecipeData(id, initialData) {
-    const [recipe, setRecipe] = useState(initialData || null);
+    const [recipe, setRecipe] = useState(initialData ? normalizeRecipeData(initialData) : null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(!initialData);
     const api = useApiClient();
@@ -42,7 +58,7 @@ function useRecipeData(id, initialData) {
 
         if (visited && !isStale) {
             if (mounted) {
-                setRecipe(visited);
+                setRecipe(normalizeRecipeData(visited));
                 setLoading(false);
                 foundInCache = true;
                 // Optional: Background revalidation if desired, but skips "too many requests" for now
@@ -53,7 +69,7 @@ function useRecipeData(id, initialData) {
             const feed = CacheManager.getFeed();
             const feedRecipe = feed?.recipes?.find(r => String(r.id) === String(id));
             if (feedRecipe && mounted) {
-                setRecipe(feedRecipe);
+                setRecipe(normalizeRecipeData(feedRecipe));
                 setLoading(false);
                 foundInCache = true;
             }
@@ -88,11 +104,12 @@ function useRecipeData(id, initialData) {
                     const recipeData = data?.data || data;
                     // Add timestamp
                     recipeData.timestamp = Date.now();
-                    setRecipe(recipeData);
+                    const normalized = normalizeRecipeData(recipeData);
+                    setRecipe(normalized);
                     setLoading(false);
 
-                    // SAVE VISITED
-                    CacheManager.saveVisitedRecipe(recipeData);
+                    // SAVE VISITED (Save original or normalized? Normalized is safer for UI)
+                    CacheManager.saveVisitedRecipe(normalized);
                 })
                 .catch(err => {
                     console.error("Fetch failed", err);
