@@ -3,9 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from './Button';
+import { useSettings } from '@context/SettingsContext';
 
 export function CookieConsent() {
     const [isVisible, setIsVisible] = useState(false);
+    const { t } = useSettings();
 
     useEffect(() => {
         // Check if user has already accepted cookies
@@ -29,16 +31,16 @@ export function CookieConsent() {
             <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                 <div className="text-sm text-foreground/90 leading-relaxed text-center md:text-left">
                     <p>
-                        Utilizamos cookies propias y de terceros para mejorar su experiencia de navegación, analizar el uso del sitio y personalizar anuncios.
+                        {t.cookie?.text || 'Utilizamos cookies propias y de terceros...'}
                     </p>
                     <p className="mt-1">
-                        Al hacer clic en "Aceptar" o continuar navegando, usted acepta nuestra{' '}
+                        {t.cookie?.accept || 'Al hacer clic en "Aceptar" o continuar navegando, usted acepta nuestra '}
                         <Link href="/privacy" className="font-medium text-primary hover:underline underline-offset-4">
-                            Política de Privacidad
+                            {t.auth.privacyLink}
                         </Link>
-                        {' '}y{' '}
+                        {t.auth.and}
                         <Link href="/terms" className="font-medium text-primary hover:underline underline-offset-4">
-                            Términos y Condiciones
+                            {t.auth.termsLink}
                         </Link>
                         .
                     </p>
@@ -48,7 +50,7 @@ export function CookieConsent() {
                         onClick={acceptCookies}
                         className="whitespace-nowrap shadow-sm hover:shadow-md transition-shadow"
                     >
-                        Aceptar y Continuar
+                        {t.cookie?.btn || 'Aceptar y Continuar'}
                     </Button>
                 </div>
             </div>

@@ -21,8 +21,7 @@ export function LandingHero() {
                     </h1>
 
                     <p className="mx-auto max-w-2xl text-lg text-muted-foreground md:text-xl leading-relaxed">
-                        Descubre una nueva forma de cocinar con recetas generadas por IA, gestiona tu despensa y organiza tus comidas semanales en un solo lugar.
-                        Únete a nuestra comunidad de amantes de la cocina y transforma tu alimentación hoy mismo.
+                        {t.landing?.heroSubtitle || 'Descubre una nueva forma de cocinar con recetas generadas por IA...'}
                     </p>
 
                     <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
@@ -31,7 +30,7 @@ export function LandingHero() {
                             onClick={() => router.push('/register')}
                             className="text-lg px-8 py-6 shadow-lg shadow-primary/25"
                         >
-                            Comenzar Gratis
+                            {t.landing?.ctaStart || 'Comenzar Gratis'}
                         </Button>
                         <Button
                             variant="outline"
@@ -42,7 +41,7 @@ export function LandingHero() {
                             }}
                             className="text-lg px-8 py-6"
                         >
-                            Explorar Recetas
+                            {t.landing?.ctaExplore || 'Explorar Recetas'}
                         </Button>
                     </div>
                 </div>

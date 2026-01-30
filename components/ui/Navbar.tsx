@@ -61,7 +61,8 @@ export function Navbar() {
                             Culina Smart
                         </span>
                         <span className="md:hidden text-2xl font-bold text-primary tracking-tight flex items-center gap-2">
-                            <ChefHat className="w-8 h-8" />
+                            {/* App Icon for Mobile */}
+                            <img src="/icon.png" alt="App Icon" className="w-8 h-8 rounded-md" />
                         </span>
                     </Link>
 
@@ -76,10 +77,10 @@ export function Navbar() {
                                 <Link
                                     href="/pantry"
                                     className="flex items-center text-sm font-medium px-4 py-2 rounded-lg text-primary bg-primary/10 hover:bg-primary/20 transition-colors"
-                                    aria-label={t.nav.pantry}
+                                    aria-label={t?.nav?.pantry || 'Despensa'}
                                 >
                                     <ShoppingBasket className="w-4 h-4 mr-2" />
-                                    {t.nav.pantry}
+                                    {t?.nav?.pantry || 'Despensa'}
                                 </Link>
 
                                 <Link
@@ -162,7 +163,7 @@ export function Navbar() {
                                         className="flex items-center text-base font-medium px-3 py-2 rounded-md text-foreground hover:bg-muted"
                                     >
                                         <ShoppingBasket className="w-5 h-5 mr-3" />
-                                        Despensa
+                                        {t?.nav?.pantry || 'Despensa'}
                                     </Link>
 
                                     <Link

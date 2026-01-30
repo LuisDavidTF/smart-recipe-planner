@@ -13,6 +13,9 @@ import { EditIcon, TrashIcon } from '@components/ui/Icons';
 import { useToast } from '@context/ToastContext';
 import { Modal } from '@components/ui/Modal';
 
+// Global map to track in-flight requests for deduplication
+const IN_FLIGHT_REQUESTS = new Map();
+
 function useRecipeData(id, initialData) {
     const [recipe, setRecipe] = useState(initialData || null);
     const [error, setError] = useState(null);
@@ -34,11 +37,16 @@ function useRecipeData(id, initialData) {
 
         // 1. Check Offline Storage first (Visited -> Feed)
         const visited = CacheManager.getVisitedRecipe(id);
-        if (visited) {
+        const STALE_MINUTES = 5;
+        const isStale = visited && (Date.now() - (visited.timestamp || 0)) > (STALE_MINUTES * 60 * 1000);
+
+        if (visited && !isStale) {
             if (mounted) {
                 setRecipe(visited);
                 setLoading(false);
                 foundInCache = true;
+                // Optional: Background revalidation if desired, but skips "too many requests" for now
+                // syncWithBackendSilent(id); 
             }
         } else {
             // Fallback to feed cache
@@ -51,25 +59,54 @@ function useRecipeData(id, initialData) {
             }
         }
 
-        // 2. Fetch fresh data
-        api.getRecipeById(id)
-            .then(data => {
-                if (!mounted) return;
-                const recipeData = data?.data || data;
-                setRecipe(recipeData);
-                setLoading(false);
+        // 2. Fetch fresh data ONLY if not found or stale
+        if (!foundInCache || isStale) {
 
-                // SAVE VISITED
-                CacheManager.saveVisitedRecipe(recipeData);
-            })
-            .catch(err => {
-                console.error("Fetch failed", err);
-                if (!mounted) return;
-                if (!foundInCache) {
-                    setError(err.message);
+            // Check if there is already a pending request for this ID
+            let requestPromise = IN_FLIGHT_REQUESTS.get(id);
+
+            if (!requestPromise) {
+                requestPromise = api.getRecipeById(id)
+                    .then(data => {
+                        // Return data to chain
+                        return data;
+                    })
+                    .finally(() => {
+                        // Cleanup after completion (success or fail)
+                        IN_FLIGHT_REQUESTS.delete(id);
+                    });
+
+                IN_FLIGHT_REQUESTS.set(id, requestPromise);
+                console.log(`[RecipeClient] Started fetch for ${id}`);
+            } else {
+                console.log(`[RecipeClient] Reusing in-flight request for ${id}`);
+            }
+
+            requestPromise
+                .then(data => {
+                    if (!mounted) return;
+                    const recipeData = data?.data || data;
+                    // Add timestamp
+                    recipeData.timestamp = Date.now();
+                    setRecipe(recipeData);
                     setLoading(false);
-                }
-            });
+
+                    // SAVE VISITED
+                    CacheManager.saveVisitedRecipe(recipeData);
+                })
+                .catch(err => {
+                    console.error("Fetch failed", err);
+                    if (!mounted) return;
+                    // Only set error if we don't have cached data to show
+                    if (!foundInCache) {
+                        setError(err.message);
+                        setLoading(false);
+                    }
+                });
+        } else {
+            console.log(`[RecipeClient] Loaded from cache: ${id}`);
+            setLoading(false);
+        }
 
         return () => { mounted = false; };
     }, [id, api, initialData]);
@@ -145,7 +182,7 @@ function RecipeDetailContent({ recipe }) {
                 <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent flex items-end">
                     <div className="p-6 md:p-8 text-white w-full flex justify-between items-end">
                         <div>
-                            <h1 className="text-3xl md:text-4xl font-bold mb-2 shadow-sm">{recipe.name}</h1>
+                            <h1 className="text-3xl md:text-4xl font-bold mb-2 shadow-sm break-words overflow-hidden">{recipe.name}</h1>
                             <div className="flex items-center gap-4 text-sm font-medium">
                                 <span className="flex items-center bg-white/20 backdrop-blur-md px-3 py-1 rounded-full">
                                     <ClockIcon className="w-4 h-4 mr-2" />
@@ -204,7 +241,7 @@ function RecipeDetailContent({ recipe }) {
                         <h2 className="text-xl font-bold text-gray-900 dark:text-gray-200 mb-3 flex items-center">
                             {t.recipe.desc}
                         </h2>
-                        <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
+                        <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg break-words overflow-wrap-anywhere">
                             {recipe.description}
                         </p>
                     </section>
@@ -220,7 +257,7 @@ function RecipeDetailContent({ recipe }) {
                                         <span className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                                             {index + 1}
                                         </span>
-                                        <p className="text-gray-700 dark:text-gray-300 leading-7 mt-1">
+                                        <p className="text-gray-700 dark:text-gray-300 leading-7 mt-1 break-words overflow-wrap-anywhere">
                                             {instruction}
                                         </p>
                                     </div>
