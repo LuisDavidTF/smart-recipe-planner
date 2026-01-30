@@ -26,6 +26,27 @@ export function FeaturesSection() {
         {
             title: t.features?.planningTitle || "Planificación Semanal",
             description: t.features?.planningDesc || "Organiza tus menús semanales...",
+
+export function FeaturesSection() {
+    const features = [
+        {
+            title: "Recetas con IA",
+            description: "Nuestra inteligencia artificial analiza tus ingredientes disponibles para sugerirte recetas deliciosas y evitar el desperdicio de alimentos.",
+            Icon: SparklesIcon,
+        },
+        {
+            title: "Gestión de Despensa",
+            description: "Mantén un inventario digital de tu cocina. Recibe alertas de caducidad y sabe siempre qué tienes a mano.",
+            Icon: PantryIcon,
+        },
+        {
+            title: "Comunidad Activa",
+            description: "Comparte tus propias creaciones culinarias y descubre recetas de chefs caseros de todo el mundo.",
+            Icon: UserIcon,
+        },
+        {
+            title: "Planificación Semanal",
+            description: "Organiza tus menús semanales con facilidad y genera listas de compras automáticas.",
             Icon: CalendarIcon,
         }
     ];
@@ -39,6 +60,10 @@ export function FeaturesSection() {
                     </h2>
                     <p className="text-lg text-muted-foreground">
                         {t.landing?.featureSubtitle || "Culina Smart no es solo un recetario..."}
+                        Todo lo que necesitas para cocinar mejor
+                    </h2>
+                    <p className="text-lg text-muted-foreground">
+                        Culina Smart no es solo un recetario, es tu asistente personal de cocina.
                     </p>
                 </div>
 
