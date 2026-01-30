@@ -274,7 +274,7 @@ function RecipeDetailContent({ recipe }) {
                                         <span className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                                             {index + 1}
                                         </span>
-                                        <p className="text-gray-700 dark:text-gray-300 leading-7 mt-1 break-words overflow-wrap-anywhere">
+                                        <p className="text-gray-700 dark:text-gray-300 leading-7 mt-1 break-words overflow-wrap-anywhere flex-1 min-w-0">
                                             {instruction}
                                         </p>
                                     </div>
