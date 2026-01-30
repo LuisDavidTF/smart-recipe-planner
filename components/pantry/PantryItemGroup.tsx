@@ -2,12 +2,13 @@ import * as React from 'react';
 import { useState } from 'react';
 import { LocalPantryItem } from '@/lib/db';
 import { BatchList } from './BatchList';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Trash2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { AddBatchModal } from './AddBatchModal';
 import { Button } from '@/components/shadcn/button';
 import { Card } from '@/components/shadcn/card';
 import { useSettings } from '@/context/SettingsContext';
+import { DeleteConfirmationModal } from './DeleteConfirmationModal';
 
 interface PantryItemGroupProps {
     ingredientId: number;
@@ -22,11 +23,9 @@ export function PantryItemGroup({ ingredientId, name, items, onUpdate, onRemove,
     const { t } = useSettings();
     const [isExpanded, setIsExpanded] = useState(false);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
     // Calculate total quantity (assuming same unit for simplicity, or just showing first unit found)
-    // TODO: Improve unit conversion/grouping. For now, sum if units match, else list unique units?
-    // Requirement says: "Leche - Total: 3 Litros".
-
     const totalQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
     const rawUnit = items[0]?.unit || '';
     const displayUnit = t.units?.[rawUnit] || rawUnit;
@@ -36,7 +35,6 @@ export function PantryItemGroup({ ingredientId, name, items, onUpdate, onRemove,
     const threeDaysFromNow = new Date();
     threeDaysFromNow.setDate(now.getDate() + 3);
 
-    // Check statuses
     let isCritical = false; // Expired
     let isWarning = false;  // Expiring soon
 
@@ -46,6 +44,14 @@ export function PantryItemGroup({ ingredientId, name, items, onUpdate, onRemove,
         if (exp < now) isCritical = true;
         else if (exp <= threeDaysFromNow) isWarning = true;
     });
+
+    const handleDeleteAll = async () => {
+        // Delete all items in this group
+        // We do this by calling onRemove for each ID. 
+        // In a real app, might want a bulk delete API, but this works for local DB loop.
+        const promises = items.map(item => item.id && onRemove(item.id));
+        await Promise.all(promises);
+    };
 
     return (
         <Card className={cn(
@@ -84,8 +90,25 @@ export function PantryItemGroup({ ingredientId, name, items, onUpdate, onRemove,
                         </p>
                     </div>
                 </div>
-                <div className="text-muted-foreground group-hover:text-primary transition-colors bg-secondary/10 p-2 rounded-full">
-                    {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+
+                <div className="flex items-center gap-3">
+                    {/* Allow deleting entire group from header if expanded or just show chevron */}
+                    {isExpanded && (
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setDeleteModalOpen(true);
+                            }}
+                        >
+                            <Trash2 className="w-4 h-4" />
+                        </Button>
+                    )}
+                    <div className="text-muted-foreground group-hover:text-primary transition-colors bg-secondary/10 p-2 rounded-full">
+                        {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                    </div>
                 </div>
             </div>
 
@@ -126,6 +149,14 @@ export function PantryItemGroup({ ingredientId, name, items, onUpdate, onRemove,
                     defaultUnit={rawUnit}
                 />
             )}
+
+            <DeleteConfirmationModal
+                isOpen={deleteModalOpen}
+                onClose={() => setDeleteModalOpen(false)}
+                onConfirm={handleDeleteAll}
+                itemName={name}
+                description={`${t.feed.deleteConfirmGeneric} (${items.length} items)`}
+            />
         </Card>
     );
 }

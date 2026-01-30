@@ -53,8 +53,8 @@ export function AddIngredientModal({ isOpen, onClose, onSave }: AddIngredientMod
                     <DialogTitle>{t.pantry.addProduct}</DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="name" className="text-right">
+                    <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2 sm:gap-4">
+                        <Label htmlFor="name" className="text-left sm:text-right">
                             {t.pantry.name}
                         </Label>
                         <Input
@@ -63,12 +63,12 @@ export function AddIngredientModal({ isOpen, onClose, onSave }: AddIngredientMod
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder={t.pantry.namePlaceholder}
-                            className="col-span-3"
+                            className="col-span-1 sm:col-span-3"
                             autoComplete="off"
                         />
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="quantity" className="text-right">
+                    <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2 sm:gap-4">
+                        <Label htmlFor="quantity" className="text-left sm:text-right">
                             {t.pantry.quantity}
                         </Label>
                         <Input
@@ -79,18 +79,18 @@ export function AddIngredientModal({ isOpen, onClose, onSave }: AddIngredientMod
                             value={quantity}
                             onChange={(e) => setQuantity(e.target.value)}
                             placeholder={t.pantry.qtyPlaceholder}
-                            className="col-span-3"
+                            className="col-span-1 sm:col-span-3"
                         />
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="unit" className="text-right">
+                    <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2 sm:gap-4">
+                        <Label htmlFor="unit" className="text-left sm:text-right">
                             {t.pantry.unit}
                         </Label>
                         <select
                             id="unit"
                             value={unit}
                             onChange={(e) => setUnit(e.target.value)}
-                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 col-span-3"
+                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 col-span-1 sm:col-span-3"
                         >
                             <option value="pza">{t.units.pza}</option>
                             <option value="kg">{t.units.kg}</option>
@@ -99,8 +99,8 @@ export function AddIngredientModal({ isOpen, onClose, onSave }: AddIngredientMod
                             <option value="ml">{t.units.ml}</option>
                         </select>
                     </div>
-                    <div className="grid grid-cols-4 items-center gap-4">
-                        <Label htmlFor="expiration" className="text-right">
+                    <div className="grid grid-cols-1 sm:grid-cols-4 items-start sm:items-center gap-2 sm:gap-4">
+                        <Label htmlFor="expiration" className="text-left sm:text-right">
                             {t.pantry.expiration}
                         </Label>
                         <Input
@@ -113,7 +113,7 @@ export function AddIngredientModal({ isOpen, onClose, onSave }: AddIngredientMod
                            */
                             value={expirationDate}
                             onChange={(e) => setExpirationDate(e.target.value)}
-                            className="col-span-3"
+                            className="col-span-1 sm:col-span-3"
                         />
                     </div>
                     <DialogFooter>

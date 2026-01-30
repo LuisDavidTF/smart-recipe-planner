@@ -107,12 +107,13 @@ export const useApiClient = () => {
 
     // TODO: Ticket FE-02 - Remove mock data when backend is ready
     syncPantry: async (items) => {
-      // return request('/api/pantry', { body: { items }, method: 'POST' });
+      // Enable real sync as requested 
+      return request('/api/pantry', { body: { items }, method: 'POST' });
 
       // Mocking latency
-      await new Promise(resolve => setTimeout(resolve, 800));
-      console.log('[Mock API] Syncing pantry items:', items);
-      return { success: true, message: 'Pantry synced successfully (Mock)' };
+      // await new Promise(resolve => setTimeout(resolve, 800));
+      // console.log('[Mock API] Syncing pantry items:', items);
+      // return { success: true, message: 'Pantry synced successfully (Mock)' };
     },
   }), [request]);
 };

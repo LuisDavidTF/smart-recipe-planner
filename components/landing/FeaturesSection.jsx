@@ -2,27 +2,30 @@
 
 import React from 'react';
 import { SparklesIcon, PantryIcon, UserIcon, CalendarIcon } from '@components/ui/Icons';
+import { useSettings } from '@context/SettingsContext';
 
 export function FeaturesSection() {
+    const { t } = useSettings();
+
     const features = [
         {
-            title: "Recetas con IA",
-            description: "Nuestra inteligencia artificial analiza tus ingredientes disponibles para sugerirte recetas deliciosas y evitar el desperdicio de alimentos.",
+            title: t.features?.aiTitle || "Recetas con IA",
+            description: t.features?.aiDesc || "Nuestra inteligencia artificial analiza tus ingredientes...",
             Icon: SparklesIcon,
         },
         {
-            title: "Gestión de Despensa",
-            description: "Mantén un inventario digital de tu cocina. Recibe alertas de caducidad y sabe siempre qué tienes a mano.",
+            title: t.features?.pantryTitle || "Gestión de Despensa",
+            description: t.features?.pantryDesc || "Mantén un inventario digital...",
             Icon: PantryIcon,
         },
         {
-            title: "Comunidad Activa",
-            description: "Comparte tus propias creaciones culinarias y descubre recetas de chefs caseros de todo el mundo.",
+            title: t.features?.communityTitle || "Comunidad Activa",
+            description: t.features?.communityDesc || "Comparte tus propias creaciones...",
             Icon: UserIcon,
         },
         {
-            title: "Planificación Semanal",
-            description: "Organiza tus menús semanales con facilidad y genera listas de compras automáticas.",
+            title: t.features?.planningTitle || "Planificación Semanal",
+            description: t.features?.planningDesc || "Organiza tus menús semanales...",
             Icon: CalendarIcon,
         }
     ];
@@ -32,10 +35,10 @@ export function FeaturesSection() {
             <div className="container px-4 md:px-6 mx-auto">
                 <div className="text-center max-w-2xl mx-auto mb-12">
                     <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl mb-4">
-                        Todo lo que necesitas para cocinar mejor
+                        {t.landing?.featureTitle || "Todo lo que necesitas para cocinar mejor"}
                     </h2>
                     <p className="text-lg text-muted-foreground">
-                        Culina Smart no es solo un recetario, es tu asistente personal de cocina.
+                        {t.landing?.featureSubtitle || "Culina Smart no es solo un recetario..."}
                     </p>
                 </div>
 

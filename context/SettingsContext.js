@@ -17,6 +17,32 @@ export function SettingsProvider({ children }) {
         es: {
             nav: { home: 'Inicio', create: 'Crear Receta', settings: 'Configuración', login: 'Acceder', register: 'Registrarse', logout: 'Salir', greeting: 'Hola,', pantry: 'Despensa' },
 
+            landing: {
+                heroTitle: 'Planificación de Comidas Inteligente',
+                heroSubtitle: 'Descubre una nueva forma de cocinar con recetas generadas por IA, gestiona tu despensa y organiza tus comidas semanales en un solo lugar. Únete a nuestra comunidad de amantes de la cocina y transforma tu alimentación hoy mismo.',
+                ctaStart: 'Comenzar Gratis',
+                ctaExplore: 'Explorar Recetas',
+                featureTitle: 'Todo lo que necesitas para cocinar mejor',
+                featureSubtitle: 'Culina Smart no es solo un recetario, es tu asistente personal de cocina.'
+            },
+
+            features: {
+                aiTitle: 'Recetas con IA',
+                aiDesc: 'Nuestra inteligencia artificial analiza tus ingredientes disponibles para sugerirte recetas deliciosas y evitar el desperdicio de alimentos.',
+                pantryTitle: 'Gestión de Despensa',
+                pantryDesc: 'Mantén un inventario digital de tu cocina. Recibe alertas de caducidad y sabe siempre qué tienes a mano.',
+                communityTitle: 'Comunidad Activa',
+                communityDesc: 'Comparte tus propias creaciones culinarias y descubre recetas de chefs caseros de todo el mundo.',
+                planningTitle: 'Planificación Semanal',
+                planningDesc: 'Organiza tus menús semanales con facilidad y genera listas de compras automáticas.'
+            },
+
+            cookie: {
+                text: 'Utilizamos cookies propias y de terceros para mejorar su experiencia de navegación, analizar el uso del sitio y personalizar anuncios.',
+                accept: 'Al hacer clic en "Aceptar" o continuar navegando, usted acepta nuestra ',
+                btn: 'Aceptar y Continuar'
+            },
+
             units: {
                 pza: 'Pieza(s)',
                 kg: 'Kilogramo(s)',
@@ -201,6 +227,32 @@ export function SettingsProvider({ children }) {
         en: {
             nav: { home: 'Home', create: 'New Recipe', settings: 'Settings', login: 'Log In', register: 'Sign Up', logout: 'Log Out', greeting: 'Hi,', pantry: 'Pantry' },
 
+            landing: {
+                heroTitle: 'Smart Meal Planning',
+                heroSubtitle: 'Discover a new way to cook with AI-generated recipes, manage your pantry, and organize your weekly meals all in one place. Join our community of food lovers and transform your eating habits today.',
+                ctaStart: 'Start for Free',
+                ctaExplore: 'Explore Recipes',
+                featureTitle: 'Everything you need to cook better',
+                featureSubtitle: 'Culina Smart is not just a recipe book, it\'s your personal kitchen assistant.'
+            },
+
+            features: {
+                aiTitle: 'AI Recipes',
+                aiDesc: 'Our artificial intelligence analyzes your available ingredients to suggest delicious recipes and prevent food waste.',
+                pantryTitle: 'Pantry Management',
+                pantryDesc: 'Keep a digital inventory of your kitchen. Get expiration alerts and always know what you have on hand.',
+                communityTitle: 'Active Community',
+                communityDesc: 'Share your own culinary creations and discover recipes from home chefs around the world.',
+                planningTitle: 'Weekly Planning',
+                planningDesc: 'Organize your weekly menus easily and generate automatic shopping lists.'
+            },
+
+            cookie: {
+                text: 'We use our own and third-party cookies to improve your browsing experience, analyze site usage, and personalize ads.',
+                accept: 'By clicking "Accept" or continuing to browse, you agree to our ',
+                btn: 'Accept and Continue'
+            },
+
             units: {
                 pza: 'Piece(s)',
                 kg: 'Kilogram(s)',
@@ -384,6 +436,32 @@ export function SettingsProvider({ children }) {
         },
         fr: {
             nav: { home: 'Accueil', create: 'Créer Recette', settings: 'Paramètres', login: 'Connexion', register: 'S\'inscrire', logout: 'Déconnexion', greeting: 'Bonjour,', pantry: 'Garde-manger' },
+
+            landing: {
+                heroTitle: 'Planification de Repas Intelligente',
+                heroSubtitle: 'Découvrez une nouvelle façon de cuisiner avec des recettes générées par IA, gérez votre garde-manger et organisez vos repas hebdomadaires au même endroit. Rejoignez notre communauté et transformez votre alimentation aujourd\'hui.',
+                ctaStart: 'Commencer Gratuitement',
+                ctaExplore: 'Explorer Recettes',
+                featureTitle: 'Tout ce dont vous avez besoin pour mieux cuisiner',
+                featureSubtitle: 'Culina Smart n\'est pas seulement un livre de recettes, c\'est votre assistant de cuisine personnel.'
+            },
+
+            features: {
+                aiTitle: 'Recettes IA',
+                aiDesc: 'Notre intelligence artificielle analyse vos ingrédients disponibles pour vous suggérer de délicieuses recettes et éviter le gaspillage alimentaire.',
+                pantryTitle: 'Gestion du Garde-manger',
+                pantryDesc: 'Gardez un inventaire numérique de votre cuisine. Recevez des alertes d\'expiration et sachez toujours ce que vous avez sous la main.',
+                communityTitle: 'Communauté Active',
+                communityDesc: 'Partagez vos propres créations culinaires et découvrez des recettes de chefs amateurs du monde entier.',
+                planningTitle: 'Planification Hebdomadaire',
+                planningDesc: 'Organisez vos menus hebdomadaires facilement et générez des listes de courses automatiques.'
+            },
+
+            cookie: {
+                text: 'Nous utilisons des cookies propres et tiers pour améliorer votre expérience de navigation, analyser l\'utilisation du site et personnaliser les publicités.',
+                accept: 'En cliquant sur "Accepter" ou en continuant à naviguer, vous acceptez notre ',
+                btn: 'Accepter et Continuer'
+            },
 
             units: {
                 pza: 'Pièce(s)',
