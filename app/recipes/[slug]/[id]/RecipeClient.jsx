@@ -16,17 +16,13 @@ import { Modal } from '@components/ui/Modal';
 // Global map to track in-flight requests for deduplication
 const IN_FLIGHT_REQUESTS = new Map();
 
-// Helper to normalize recipe keys (snake_case -> camelCase fallback)
-// This ensures that if we load from a cache that stored DB row format, we can still read properties consistently.
 const normalizeRecipeData = (data) => {
     if (!data) return null;
     return {
         ...data,
-        // Ensure consistent accessors
         imageUrl: data.imageUrl || data.image_url,
         preparationTimeMinutes: data.preparationTimeMinutes || data.preparation_time_minutes,
         authorName: data.authorName || data.author_name || data.user?.name,
-        // Ensure ingredients/instructions are arrays
         ingredients: Array.isArray(data.ingredients) ? data.ingredients : [],
         instructions: Array.isArray(data.instructions) ? data.instructions : [],
     };
@@ -39,19 +35,15 @@ function useRecipeData(id, initialData) {
     const api = useApiClient();
 
     useEffect(() => {
-        // If we have initial data, we just save it to cache and return (or maybe fetch fresh in background?)
-        // For now, let's treat initialData as authoritative for the first render.
         if (initialData) {
             CacheManager.saveVisitedRecipe(initialData);
             setLoading(false);
-            // We could optionally fetch fresh data here silently
             return;
         }
 
         let mounted = true;
         let foundInCache = false;
 
-        // 1. Check Offline Storage first (Visited -> Feed)
         const visited = CacheManager.getVisitedRecipe(id);
         const STALE_MINUTES = 5;
         const isStale = visited && (Date.now() - (visited.timestamp || 0)) > (STALE_MINUTES * 60 * 1000);
@@ -61,11 +53,8 @@ function useRecipeData(id, initialData) {
                 setRecipe(normalizeRecipeData(visited));
                 setLoading(false);
                 foundInCache = true;
-                // Optional: Background revalidation if desired, but skips "too many requests" for now
-                // syncWithBackendSilent(id); 
             }
         } else {
-            // Fallback to feed cache
             const feed = CacheManager.getFeed();
             const feedRecipe = feed?.recipes?.find(r => String(r.id) === String(id));
             if (feedRecipe && mounted) {
@@ -75,53 +64,39 @@ function useRecipeData(id, initialData) {
             }
         }
 
-        // 2. Fetch fresh data ONLY if not found or stale
         if (!foundInCache || isStale) {
-
-            // Check if there is already a pending request for this ID
             let requestPromise = IN_FLIGHT_REQUESTS.get(id);
 
             if (!requestPromise) {
                 requestPromise = api.getRecipeById(id)
-                    .then(data => {
-                        // Return data to chain
-                        return data;
-                    })
+                    .then(data => data)
                     .finally(() => {
-                        // Cleanup after completion (success or fail)
                         IN_FLIGHT_REQUESTS.delete(id);
                     });
 
                 IN_FLIGHT_REQUESTS.set(id, requestPromise);
                 console.log(`[RecipeClient] Started fetch for ${id}`);
-            } else {
-                console.log(`[RecipeClient] Reusing in-flight request for ${id}`);
             }
 
             requestPromise
                 .then(data => {
                     if (!mounted) return;
                     const recipeData = data?.data || data;
-                    // Add timestamp
                     recipeData.timestamp = Date.now();
                     const normalized = normalizeRecipeData(recipeData);
                     setRecipe(normalized);
                     setLoading(false);
-
-                    // SAVE VISITED (Save original or normalized? Normalized is safer for UI)
                     CacheManager.saveVisitedRecipe(normalized);
                 })
                 .catch(err => {
                     console.error("Fetch failed", err);
                     if (!mounted) return;
-                    // Only set error if we don't have cached data to show
                     if (!foundInCache) {
                         setError(err.message);
                         setLoading(false);
                     }
                 });
         } else {
-            console.log(`[RecipeClient] Loaded from cache: ${id}`);
             setLoading(false);
         }
 
@@ -142,8 +117,6 @@ function RecipeDetailContent({ recipe }) {
 
     if (!recipe) return null;
 
-    // Safe accessor for user ID comparison - Robust against String/Int mismatches and undefined
-    // FALLBACK: Name comparison (requested by user due to missing API IDs)
     const normalize = (str) => String(str || '').trim().toLowerCase();
 
     const isOwner = user && (
@@ -170,50 +143,47 @@ function RecipeDetailContent({ recipe }) {
         }
     };
 
-    // Use the image directly from the recipe object. The SmartImage component handles errors/fallbacks.
     let imageUrl = recipe.imageUrl;
-
-    // Resolve relative URLs
     if (imageUrl && imageUrl.startsWith('/')) {
         const apiUrl = process.env.NEXT_PUBLIC_API_URL;
         if (apiUrl) {
-            // Avoid double slashes if apiUrl ends with /
             const base = apiUrl.endsWith('/') ? apiUrl.slice(0, -1) : apiUrl;
             imageUrl = `${base}${imageUrl}`;
         }
     } else if (!imageUrl) {
-        // If no image URL exists, use a default placeholder
         imageUrl = `https://placehold.co/600x400/059669/ffffff?text=${t.recipe.chef || 'Culina'}`;
     }
 
     return (
-        <article className="bg-white dark:bg-gray-800 rounded-xl shadow-xs overflow-hidden border border-gray-100 dark:border-gray-700 transition-colors duration-300">
+        <article className="bg-white dark:bg-gray-800 rounded-xl shadow-xs overflow-hidden border border-gray-100 dark:border-gray-700 transition-colors duration-300 w-full">
 
-            {/* Hero Header with Image */}
+            {/* Hero Header (Imagen y Título) - SIN CAMBIOS */}
             <div className="relative w-full h-72 sm:h-96 bg-gray-100">
                 <SmartImage
                     src={imageUrl}
                     alt={recipe.name}
                     className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent flex items-end">
-                    <div className="p-6 md:p-8 text-white w-full flex justify-between items-end">
-                        <div>
-                            <h1 className="text-3xl md:text-4xl font-bold mb-2 shadow-sm break-words overflow-hidden">{recipe.name}</h1>
-                            <div className="flex items-center gap-4 text-sm font-medium">
-                                <span className="flex items-center bg-white/20 backdrop-blur-md px-3 py-1 rounded-full">
-                                    <ClockIcon className="w-4 h-4 mr-2" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent flex items-end">
+                    <div className="p-4 md:p-8 text-white w-full flex flex-col md:flex-row justify-between items-end gap-4">
+                        <div className="w-full">
+                            <h1 className="text-2xl md:text-4xl font-bold mb-3 shadow-sm break-words leading-tight">
+                                {recipe.name}
+                            </h1>
+                            <div className="flex flex-wrap items-center gap-2 md:gap-4 text-sm font-medium">
+                                <span className="flex items-center bg-white/20 backdrop-blur-md px-3 py-1 rounded-full whitespace-nowrap">
+                                    <ClockIcon className="w-4 h-4 mr-2 flex-shrink-0" />
                                     {recipe.preparationTimeMinutes} {t.recipe.time}
                                 </span>
-                                <span className="flex items-center bg-white/20 backdrop-blur-md px-3 py-1 rounded-full">
-                                    <UserIcon className="w-4 h-4 mr-2" />
+                                <span className="flex items-center bg-white/20 backdrop-blur-md px-3 py-1 rounded-full whitespace-nowrap">
+                                    <UserIcon className="w-4 h-4 mr-2 flex-shrink-0" />
                                     {recipe.authorName || recipe.user?.name || t.recipe.chef}
                                 </span>
                             </div>
                         </div>
 
                         {isOwner && (
-                            <div className="hidden sm:flex gap-3">
+                            <div className="hidden sm:flex gap-3 flex-shrink-0">
                                 <Button
                                     variant="secondary"
                                     onClick={handleEdit}
@@ -234,70 +204,61 @@ function RecipeDetailContent({ recipe }) {
                 </div>
             </div>
 
-            <div className="p-6 md:p-8 grid gap-8 md:grid-cols-[2fr_1fr]">
+            {/* --- LAYOUT PRINCIPAL REESTRUCTURADO --- */}
+            {/* Usamos Grid. 
+                - items-start: Importante para que el sticky no se estire.
+                - gap-8: Espacio entre elementos tanto vertical como horizontal.
+            */}
+            <div className="p-4 md:p-8 grid gap-8 md:grid-cols-[2fr_1fr] items-start">
 
-                {/* Main Content */}
-                <div className="space-y-8">
-                    {/* Mobile Actions */}
+                {/* 1. SECCIÓN DE DESCRIPCIÓN */}
+                {/* En Desktop: Columna 1, Fila 1 */}
+                <section className="md:col-start-1 md:row-start-1 space-y-6 min-w-0">
+                    
+                    {/* Botones móviles (solo aparecen si eres dueño y en movil) */}
                     {isOwner && (
                         <div className="flex sm:hidden gap-3 mb-6">
                             <Button
                                 variant="secondary"
                                 onClick={handleEdit}
-                                className="flex-1"
+                                className="flex-1 justify-center"
                             >
                                 <EditIcon className="w-4 h-4 mr-2" /> {t.common.edit}
                             </Button>
-                            <Button variant="danger" onClick={handleDelete} className="flex-1">
+                            <Button variant="danger" onClick={handleDelete} className="flex-1 justify-center">
                                 <TrashIcon className="w-4 h-4 mr-2" /> {t.common.delete}
                             </Button>
                         </div>
                     )}
 
-                    <section>
+                    <div>
                         <h2 className="text-xl font-bold text-gray-900 dark:text-gray-200 mb-3 flex items-center">
                             {t.recipe.desc}
                         </h2>
-                        <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-lg break-words overflow-wrap-anywhere">
+                        <p className="text-gray-700 dark:text-gray-300 leading-relaxed text-base md:text-lg break-words min-w-0">
                             {recipe.description}
                         </p>
-                    </section>
+                    </div>
+                </section>
 
-                    <section>
-                        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-200 mb-4 flex items-center">
-                            {t.recipe.instr}
-                        </h2>
-                        <div className="space-y-6">
-                            {recipe.instructions?.length > 0 ? (
-                                recipe.instructions.map((instruction, index) => (
-                                    <div key={index} className="flex gap-4 group">
-                                        <span className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                                            {index + 1}
-                                        </span>
-                                        <p className="text-gray-700 dark:text-gray-300 leading-7 mt-1 break-words overflow-wrap-anywhere flex-1 min-w-0">
-                                            {instruction}
-                                        </p>
-                                    </div>
-                                ))
-                            ) : (
-                                <p className="text-gray-500 italic">{t.recipe.noInstr}</p>
-                            )}
-                        </div>
-                    </section>
-                </div>
-
-                {/* Sidebar / Ingredients */}
-                <aside>
-                    <div className="bg-gray-50 dark:bg-gray-700/30 p-6 rounded-xl border border-gray-100 dark:border-gray-700 sticky top-24">
+                {/* 2. SECCIÓN DE INGREDIENTES (SIDEBAR) */}
+                {/* TRUCO MAGIA:
+                   - HTML: Está en 2da posición, así que en móvil sale DESPUÉS de la descripción y ANTES de instrucciones.
+                   - Desktop (md): Le forzamos a ir a la Columna 2 (col-start-2) y ocupar 2 filas (row-span-2) para cubrir el alto de descripción e instrucciones.
+                */}
+                <aside className="min-w-0 md:col-start-2 md:row-start-1 md:row-span-2">
+                    <div className="bg-gray-50 dark:bg-gray-700/30 p-4 md:p-6 rounded-xl border border-gray-100 dark:border-gray-700 md:sticky md:top-24 overflow-hidden w-full">
                         <h3 className="text-lg font-bold text-gray-900 dark:text-gray-200 mb-4 border-b border-gray-200 dark:border-gray-600 pb-2">
                             {t.recipe.ingr}
                         </h3>
-                        <ul className="space-y-3">
+                        <ul className="space-y-4">
                             {recipe.ingredients?.length > 0 ? (
                                 recipe.ingredients.map((ing, i) => (
-                                    <li key={ing.id || i} className="flex items-start justify-between text-sm">
-                                        <span className="text-gray-700 dark:text-gray-300 font-medium">{ing.name || ing.ingredient?.name}</span>
-                                        <span className="text-gray-500 dark:text-gray-400 whitespace-nowrap ml-2">
+                                    <li key={ing.id || i} className="flex flex-col sm:flex-row sm:items-start sm:justify-between text-sm gap-1 sm:gap-4 border-b border-gray-200/50 dark:border-gray-700/50 pb-2 last:border-0 last:pb-0">
+                                        <span className="text-gray-700 dark:text-gray-300 font-medium leading-tight">
+                                            {ing.name || ing.ingredient?.name}
+                                        </span>
+                                        <span className="text-gray-500 dark:text-gray-400 sm:text-right shrink-0 leading-tight">
                                             {ing.quantity} {ing.unitOfMeasure || ing.unit_of_measure}
                                         </span>
                                     </li>
@@ -309,16 +270,39 @@ function RecipeDetailContent({ recipe }) {
                     </div>
                 </aside>
 
+                {/* 3. SECCIÓN DE INSTRUCCIONES */}
+                {/* En Desktop: Columna 1, Fila 2 (Debajo de la descripción) */}
+                <section className="md:col-start-1 md:row-start-2 min-w-0">
+                    <h2 className="text-xl font-bold text-gray-900 dark:text-gray-200 mb-4 flex items-center">
+                        {t.recipe.instr}
+                    </h2>
+                    <div className="space-y-6">
+                        {recipe.instructions?.length > 0 ? (
+                            recipe.instructions.map((instruction, index) => (
+                                <div key={index} className="flex gap-4 group items-start">
+                                    <span className="flex-shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-sm group-hover:bg-primary group-hover:text-primary-foreground transition-colors mt-0.5">
+                                        {index + 1}
+                                    </span>
+                                    <p className="text-gray-700 dark:text-gray-300 leading-7 break-words flex-1 min-w-0">
+                                        {instruction}
+                                    </p>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-gray-500 italic">{t.recipe.noInstr}</p>
+                        )}
+                    </div>
+                </section>
+
             </div>
 
-            {/* Delete Confirmation Modal */}
             <Modal
                 isOpen={deleteModalState.isOpen}
                 onClose={() => setDeleteModalState({ isOpen: false })}
                 title={t.feed.deleteTitle}
             >
                 <div className="space-y-4">
-                    <p className="text-gray-600 dark:text-gray-300">
+                    <p className="text-gray-600 dark:text-gray-300 break-words">
                         {t.feed.deleteConfirm} <strong>{recipe.name}</strong>?
                     </p>
                     <div className="flex justify-end gap-3">
@@ -341,16 +325,13 @@ function RecipeDetailContent({ recipe }) {
 export default function RecipeClient({ recipe: initialRecipe, recipeId, correctSlug, currentSlug }) {
     const { recipe, error, loading } = useRecipeData(recipeId, initialRecipe);
     const { t } = useSettings();
-    const router = useRouter();
 
     useEffect(() => {
-        // HBO-style URL correction
         if (correctSlug && correctSlug !== currentSlug) {
-            // HBO-style URL correction using History API directly to avoid triggering Next.js interception/modals
             const newPath = `/recipes/${correctSlug}/${recipeId}`;
             window.history.replaceState({ ...window.history.state, as: newPath, url: newPath }, '', newPath);
         }
-    }, [correctSlug, currentSlug, recipeId]); // Removed router dependence
+    }, [correctSlug, currentSlug, recipeId]);
 
     if (loading) {
         return <div className="p-10 text-center">{t.recipe.loading}</div>;
